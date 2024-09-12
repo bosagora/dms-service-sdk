@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Dms.Service</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Michael Kim</Authors>
+        <PackageProjectUrl>https://github.com/bosagora/dms-service-sdk/tree/v0.x.x/csharp</PackageProjectUrl>
+        <PackageLicenseUrl></PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bosagora/dms-service-sdk/tree/v0.x.x/csharp</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Description>The standard development kit provided for interworking with a decentralized loyalty point system.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Copyright>Michael Kim</Copyright>
+        <Version>1.0.1</Version>
+        <Title>dms-service-sdk</Title>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Nethereum.ABI" Version="4.21.4" />
+        <PackageReference Include="Nethereum.HdWallet" Version="4.21.4" />
+        <PackageReference Include="Nethereum.Hex" Version="4.21.4" />
+        <PackageReference Include="Nethereum.Signer" Version="4.21.4" />
+        <PackageReference Include="Nethereum.Util" Version="4.21.4" />
+        <PackageReference Include="Nethereum.Web3" Version="4.21.4" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+</Project>

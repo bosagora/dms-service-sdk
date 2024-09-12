@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dms-service-sdk", "dms-service-sdk\dms-service-sdk.csproj", "{B81EA775-099E-42EF-B239-7551CCC60633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dms-service-sdk-test", "dms-service-sdk-test\dms-service-sdk-test.csproj", "{99A4381E-F344-4739-8FCE-6A3E36FBAF06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dms-service-sdk-sample", "dms-service-sdk-sample\dms-service-sdk-sample.csproj", "{8D31FD19-C22E-4F17-BB3B-0DD21F233612}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B81EA775-099E-42EF-B239-7551CCC60633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81EA775-099E-42EF-B239-7551CCC60633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81EA775-099E-42EF-B239-7551CCC60633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81EA775-099E-42EF-B239-7551CCC60633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A4381E-F344-4739-8FCE-6A3E36FBAF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A4381E-F344-4739-8FCE-6A3E36FBAF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A4381E-F344-4739-8FCE-6A3E36FBAF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A4381E-F344-4739-8FCE-6A3E36FBAF06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D31FD19-C22E-4F17-BB3B-0DD21F233612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D31FD19-C22E-4F17-BB3B-0DD21F233612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D31FD19-C22E-4F17-BB3B-0DD21F233612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D31FD19-C22E-4F17-BB3B-0DD21F233612}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
