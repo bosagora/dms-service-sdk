@@ -29,5 +29,4 @@ public class AmountTest
             Assert.That(Amount.Make(10).ToString(), Is.EqualTo("10000000000000000000"));
         });
     }
-
 }

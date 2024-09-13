@@ -14,9 +14,21 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The client that is needed to provide a point to the user.
+ * First, you must obtain permission from the loyalty system and register the address of the wallet to be used in the loyalty system.
+ */
 public class ProviderClient extends Client {
+    /**
+     * Message repeater's wallet for providing
+     */
     protected final Credentials credentials;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the providing
+     */
     public ProviderClient(NetWorkType network, String privateKey) {
         super(network);
         this.credentials = Credentials.create(ECKeyPair.create(new BigInteger(Numeric.cleanHexPrefix(privateKey), 16)));

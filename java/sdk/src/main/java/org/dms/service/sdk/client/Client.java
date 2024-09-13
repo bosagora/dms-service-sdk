@@ -12,11 +12,27 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The client class of decentralized loyalty services
+ */
 public class Client {
+    /**
+     * The endpoint of the relay API server
+     */
     protected final String relayEndpoint;
+    /**
+     * The endpoint of the save purchase API server
+     */
     protected final String saveEndpoint;
+    /**
+     * The Chain ID of side chain
+     */
     protected int chainId;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     */
     public Client(NetWorkType network) {
         if (network == NetWorkType.localhost) {
             relayEndpoint = "http://127.0.0.1:7070";
@@ -32,6 +48,13 @@ public class Client {
 
     }
 
+    /**
+     * Translate HTTP response data into JSON objects and deliver
+     * @param conn HttpURLConnection
+     * @return JSON objects
+     * @throws Exception Error during HTTP communication
+     */
+    @NotNull
     protected static JSONObject getResponse(@NotNull HttpURLConnection conn) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
 
@@ -57,14 +80,33 @@ public class Client {
         return jObject;
     }
 
+    /**
+     * The data inside the JSON object that was responded is extracted as an object.
+     * @param conn HttpURLConnection
+     * @return JSON objects
+     * @throws Exception Error during HTTP communication
+     */
     protected static JSONObject getJSONObjectResponse(@NotNull HttpURLConnection conn) throws Exception {
         return getResponse(conn).getJSONObject("data");
     }
 
+    /**
+     * The data inside the JSON object that was responded is extracted as an array.
+     * @param conn HttpURLConnection
+     * @return JSON objects
+     * @throws Exception Error during HTTP communication
+     */
     protected static JSONArray getJSONArrayResponse(@NotNull HttpURLConnection conn) throws Exception {
         return getResponse(conn).getJSONArray("data");
     }
 
+    /**
+     * Create an HTTP connection
+     * @param uri URL
+     * @param method GET or POST
+     * @return HttpURLConnection
+     * @throws Exception Exception while creating HTTP connection
+     */
     protected HttpURLConnection getHttpURLConnection(@NotNull URI uri, String method) throws Exception  {
         HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
         conn.setRequestMethod(method);
@@ -77,6 +119,9 @@ public class Client {
 
     /**
      * Provide the ID of the chain
+     * @return chain ID
+     *
+     * @throws Exception Error during HTTP communication
      */
     public long getChainId() throws Exception {
         if (chainId != 0) {
@@ -93,6 +138,9 @@ public class Client {
     /**
      * Provide the user's points and token balance information
      * @param phoneNumber User's phone number
+     * @return UserBalance
+     *
+     * @throws Exception Error during HTTP communication
      */
     public UserBalance getBalancePhone(@NotNull String phoneNumber) throws Exception {
         URI uri = new URI(relayEndpoint + "/v1/ledger/balance/phone/" + phoneNumber.trim().replace(" ", "%20"));
@@ -104,6 +152,9 @@ public class Client {
     /**
      * Provide the user's points and token balance information
      * @param phoneHash User's phone number hash
+     * @return UserBalance
+     *
+     * @throws Exception Error during HTTP communication
      */
     public UserBalance getBalancePhoneHash(@NotNull String phoneHash) throws Exception {
         URI uri = new URI(relayEndpoint + "/v1/ledger/balance/phoneHash/" + phoneHash.trim());
@@ -115,6 +166,9 @@ public class Client {
     /**
      * Provide the user's points and token balance information
      * @param account User's wallet address
+     * @return UserBalance
+     *
+     * @throws Exception Error during HTTP communication
      */
     public UserBalance getBalanceAccount(@NotNull String account) throws Exception {
         URI uri = new URI(relayEndpoint + "/v1/ledger/balance/account/" + account.trim());
@@ -127,6 +181,9 @@ public class Client {
      * Provide a nonce corresponding to the user's wallet address. It provides a nonce corresponding to the user's wallet address.
      * This ensures that the same signature is not repeated. And this value is recorded in Contract and automatically increases by 1.
      * @param account User's wallet address
+     * @return the nonce
+     *
+     * @throws Exception Error during HTTP communication
      */
     public long getLedgerNonceOf(@NotNull String account) throws Exception {
         URI uri = new URI(relayEndpoint + "/v1/ledger/nonce/" + account.trim());

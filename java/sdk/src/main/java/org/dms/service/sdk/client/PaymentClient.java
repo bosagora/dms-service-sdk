@@ -17,12 +17,21 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The client that processes payments using points.
+ * It has the role of delivering input from the KIOSK to the loyalty system.
+ */
 public class PaymentClient extends Client {
     /**
      * Message repeater's wallet for payment
      */
     protected final Credentials credentials;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the payment
+     */
     public PaymentClient(NetWorkType network, String privateKey) {
         super(network);
         this.credentials = Credentials.create(ECKeyPair.create(new BigInteger(Numeric.cleanHexPrefix(privateKey), 16)));

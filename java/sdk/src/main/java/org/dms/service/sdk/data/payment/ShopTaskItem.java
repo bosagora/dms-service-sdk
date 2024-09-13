@@ -4,6 +4,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+/**
+ * Data generated during store information modification
+ */
 public class ShopTaskItem {
     public String taskId;
     public String shopId;

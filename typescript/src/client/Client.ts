@@ -5,6 +5,9 @@ import URI from "urijs";
 
 import { BigNumber } from "@ethersproject/bignumber";
 
+/**
+ * The client class of decentralized loyalty services
+ */
 export class Client {
     /**
      * Endpoint of API
@@ -13,11 +16,15 @@ export class Client {
     protected endpoints: IEndpoints;
 
     /**
-     * Chain ID of sidechain
+     * Chain ID of side chain
      * @private
      */
     private chainId: number = 0;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     */
     constructor(network: NetWorkType) {
         if (network === NetWorkType.localhost) {
             this.endpoints = {
