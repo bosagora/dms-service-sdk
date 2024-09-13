@@ -21,10 +21,9 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
      * @param amount    Purchase amount
      * @param currency  This is currency symbol (case letter)
      */
-    public PaymentInfo GetPaymentInfo(string account, BigInteger amount, string currency)  {
-        var request = GetHttpRequest($"{RelayEndpoint}/v2/payment/info?account={account.Trim()}&amount={amount.ToString()}&currency={currency.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var data = GetJObjectResponse(response);
+    public async Task<PaymentInfo> GetPaymentInfo(string account, BigInteger amount, string currency)  {
+        var response = await GetAsync($"{RelayEndpoint}/v2/payment/info?account={account.Trim()}&amount={amount.ToString()}&currency={currency.Trim()}");
+        var data = ParseResponseToJObject(response);
         return new PaymentInfo(
                 data["account"]!.ToString(),
                 BigInteger.Parse(data["amount"]!.ToString()),
@@ -49,7 +48,7 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
      * @param shopId        Shop ID
      * @param terminalId    Terminal ID
      */
-    public PaymentTaskItem OpenNewPayment(string purchaseId, string account, BigInteger amount, string currency, string shopId, string terminalId)  {
+    public async Task<PaymentTaskItem> OpenNewPayment(string purchaseId, string account, BigInteger amount, string currency, string shopId, string terminalId)  {
         var message = CommonUtils.GetOpenNewPaymentMessage(
                 purchaseId,
                 amount,
@@ -60,10 +59,7 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/new/open", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "purchaseId", purchaseId },
             { "amount", amount.ToString() },
@@ -72,15 +68,10 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
             { "account", account },
             { "terminalId", terminalId },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return PaymentTaskItem.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/new/open", body);
+        return PaymentTaskItem.FromJObject(ParseResponseToJObject(response));
     }
 
     /**
@@ -88,30 +79,22 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
      * @param paymentId Payment ID
      * @param confirm If this value is true, the payment will be terminated normally, otherwise the payment will be canceled.
      */
-    public PaymentTaskItem CloseNewPayment(string paymentId, bool confirm)  {
+    public async Task<PaymentTaskItem> CloseNewPayment(string paymentId, bool confirm)  {
         var message = CommonUtils.GetCloseNewPaymentMessage(
                 paymentId,
                 confirm
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/new/close", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },
             { "confirm", confirm },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return PaymentTaskItem.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/new/close", body);
+        return PaymentTaskItem.FromJObject(ParseResponseToJObject(response));
     }
 
     /**
@@ -119,30 +102,22 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
      * @param paymentId  Payment ID
      * @param terminalId Terminal ID
      */
-    public PaymentTaskItem OpenCancelPayment(string paymentId, string terminalId)  {
+    public async Task<PaymentTaskItem> OpenCancelPayment(string paymentId, string terminalId)  {
         var message = CommonUtils.GetOpenCancelPaymentMessage(
             paymentId,
             terminalId
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/cancel/open", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },
             { "terminalId", terminalId },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return PaymentTaskItem.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/cancel/open", body);
+        return PaymentTaskItem.FromJObject(ParseResponseToJObject(response));
     }
 
     /**
@@ -150,54 +125,41 @@ public class PaymentClient(NetWorkType network, string privateKey) : Client(netw
      * @param paymentId Payment ID
      * @param confirm If this value is true, the payment will be terminated normally, otherwise the payment will be canceled.
      */
-    public PaymentTaskItem CloseCancelPayment(string paymentId, bool confirm)  {
+    public async Task<PaymentTaskItem> CloseCancelPayment(string paymentId, bool confirm)  {
         var message = CommonUtils.GetCloseCancelPaymentMessage(
             paymentId,
             confirm
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/cancel/close", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },
             { "confirm", confirm },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return PaymentTaskItem.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/cancel/close", body);
+        return PaymentTaskItem.FromJObject(ParseResponseToJObject(response));
     }
 
     /**
      * Provide detailed information on the payment
      * @param paymentId Payment ID
      */
-    public PaymentTaskItem GetPaymentItem(string paymentId)  {
-        var request = GetHttpRequest($"{RelayEndpoint}/v2/payment/item?paymentId={paymentId.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-
-        return PaymentTaskItem.FromJObject(GetJObjectResponse(response));
+    public async Task<PaymentTaskItem> GetPaymentItem(string paymentId)  {
+        var response = await GetAsync($"{RelayEndpoint}/v2/payment/item?paymentId={paymentId.Trim()}");
+        return PaymentTaskItem.FromJObject(ParseResponseToJObject(response));
     }
 
-    public long GetLatestTaskSequence()  {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/task/sequence/latest");
-        var response = (HttpWebResponse)request.GetResponse();
-        
-        var data = GetJObjectResponse(response);
+    public async Task<long> GetLatestTaskSequence()  {
+        var response = await GetAsync($"{RelayEndpoint}/v1/task/sequence/latest");
+        var data = ParseResponseToJObject(response);
         return Convert.ToInt64(data["sequence"]!.ToString());
     }
 
-    public JArray GetTasks(long sequence)  {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/task/list/{sequence.ToString()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        return GetJArrayResponse(response);
+    public async Task<JArray> GetTasks(long sequence)  {
+        var response = await GetAsync($"{RelayEndpoint}/v1/task/list/{sequence.ToString()}");
+        return ParseResponseToJArray(response);
     }
 }

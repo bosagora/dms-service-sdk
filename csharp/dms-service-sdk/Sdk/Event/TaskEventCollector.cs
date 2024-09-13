@@ -30,20 +30,22 @@ public class TaskEventCollector(PaymentClient client, ITaskEventListener listene
 {
     private long _sequence = 0;
 
-    public override void OnStart() {
+    protected override async Task OnStart() 
+    {
         WriteLine("TaskEventCollector:OnStart");
         try {
-            this._sequence = client.GetLatestTaskSequence();
+            this._sequence = await client.GetLatestTaskSequence();
             WriteLine($"Received sequence = {this._sequence}");
         } catch (Exception) {
             //
         }
     }
 
-    public override void OnWork() {
+    protected override async Task OnWork() 
+    {
         try
         {
-            var tasks = client.GetTasks(this._sequence);
+            var tasks = await client.GetTasks(this._sequence);
             
             foreach (var t in tasks)
             {
@@ -80,7 +82,9 @@ public class TaskEventCollector(PaymentClient client, ITaskEventListener listene
         }
     }
 
-    public override void OnStop() {
+    protected override async Task OnStop()
+    {
+        await Task.Delay(0);
         WriteLine("TaskEventCollector:OnStop");
     }
 }

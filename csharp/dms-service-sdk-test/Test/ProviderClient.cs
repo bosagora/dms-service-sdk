@@ -24,78 +24,78 @@ public class ProviderClientTests
     }
 
     [Test]
-    public void Test01_IsProvider()
+    public async Task Test01_IsProvider()
     {
-        var value = providerClient.IsProvider(providerClient.Address);
+        var value = await providerClient.IsProvider(providerClient.Address);
         Assert.That(value, Is.EqualTo(true));
     }
 
     [Test]
-    public void Test02_ClearAgent()
+    public async Task Test02_ClearAgent()
     {
-        providerClient.SetAgent(AddressUtil.ZERO_ADDRESS);
-        Assert.That(providerClient.GetAgent(), Is.EqualTo(AddressUtil.ZERO_ADDRESS));
+        await providerClient.SetAgent(AddressUtil.ZERO_ADDRESS);
+        Assert.That(await providerClient.GetAgent(), Is.EqualTo(AddressUtil.ZERO_ADDRESS));
     }
 
     [Test]
-    public void Test03_ProvideToAddress()
+    public async Task Test03_ProvideToAddress()
     {
         var receiver = "0xB6f69F0e9e70034ba0578C542476cC13eF739269";
-        var res1 = providerClient.GetBalanceAccount(receiver);
+        var res1 = await providerClient.GetBalanceAccount(receiver);
         var oldBalance = res1.Point.Balance;
 
         var amount = Amount.Make("100").Value;
-        providerClient.ProvideToAddress(providerClient.Address, receiver, amount);
-        var res2 = providerClient.GetBalanceAccount(receiver);
+        await providerClient.ProvideToAddress(providerClient.Address, receiver, amount);
+        var res2 = await providerClient.GetBalanceAccount(receiver);
 
         Assert.That(res2.Point.Balance, Is.EqualTo(BigInteger.Add(oldBalance, amount)));
     }
 
     [Test]
-    public void Test04_ProvideToPhone()
+    public async Task Test04_ProvideToPhone()
     {
         var phoneNumber = "+82 10-9000-5000";
-        var res1 = providerClient.GetBalancePhone(phoneNumber);
+        var res1 = await providerClient.GetBalancePhone(phoneNumber);
         var oldBalance = res1.Point.Balance;
         var amount = Amount.Make("100").Value;
         
-        providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
-        var res2 = providerClient.GetBalancePhone(phoneNumber);
+        await providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
+        var res2 = await providerClient.GetBalancePhone(phoneNumber);
 
         Assert.That(res2.Point.Balance, Is.EqualTo(BigInteger.Add(oldBalance, amount)));
     }
 
     [Test]
-    public void Test05_SetNewAgent()
+    public async Task Test05_SetNewAgent()
     {
-        providerClient.SetAgent(agentClient.Address);
-        Assert.That(providerClient.GetAgent(), Is.EqualTo(agentClient.Address));
+        await providerClient.SetAgent(agentClient.Address);
+        Assert.That(await providerClient.GetAgent(), Is.EqualTo(agentClient.Address));
     }
         
     [Test]
-    public void Test06_ProvideToAddress()
+    public async Task Test06_ProvideToAddress()
     {
         var receiver = "0xB6f69F0e9e70034ba0578C542476cC13eF739269";
-        var res1 = providerClient.GetBalanceAccount(receiver);
+        var res1 = await providerClient.GetBalanceAccount(receiver);
         var oldBalance = res1.Point.Balance;
 
         var amount = Amount.Make("100").Value;
-        agentClient.ProvideToAddress(providerClient.Address, receiver, amount);
-        var res2 = providerClient.GetBalanceAccount(receiver);
+        await agentClient.ProvideToAddress(providerClient.Address, receiver, amount);
+        var res2 = await providerClient.GetBalanceAccount(receiver);
 
         Assert.That(res2.Point.Balance, Is.EqualTo(BigInteger.Add(oldBalance, amount)));
     }
         
     [Test]
-    public void Test07_ProvideToPhone()
+    public async Task Test07_ProvideToPhone()
     {
         var phoneNumber = "+82 10-9000-5000";
-        var res1 = providerClient.GetBalancePhone(phoneNumber);
+        var res1 = await providerClient.GetBalancePhone(phoneNumber);
         var oldBalance = res1.Point.Balance;
         var amount = Amount.Make("100").Value;
         
-        agentClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
-        var res2 = providerClient.GetBalancePhone(phoneNumber);
+        await agentClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
+        var res2 = await providerClient.GetBalancePhone(phoneNumber);
 
         Assert.That(res2.Point.Balance, Is.EqualTo(BigInteger.Add(oldBalance, amount)));
     }

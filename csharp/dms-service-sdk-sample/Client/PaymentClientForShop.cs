@@ -40,39 +40,31 @@ public class PaymentClientForShop(NetWorkType network, string privateKey, string
         return message;
     }
 
-    public PaymentTaskItemShort ApproveCancelPayment(
-            string paymentId,
-            string purchaseId,
-            bool approval
+    public async Task<PaymentTaskItemShort> ApproveCancelPayment(
+        string paymentId,
+        string purchaseId,
+        bool approval
     ) {
         var account = this.Address;
-        var nonce = this.GetLedgerNonceOf(account);
+        var nonce = await this.GetLedgerNonceOf(account);
         var message = GetLoyaltyCancelPaymentMessage(
-                paymentId,
-                purchaseId,
-                account,
-                nonce,
-                this.GetChainId()
+            paymentId,
+            purchaseId,
+            account,
+            nonce,
+            await this.GetChainId()
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/cancel/approval", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },
             { "approval", approval },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/cancel/approval", body);
 
-        var response = (HttpWebResponse)request.GetResponse();
-
-        return PaymentTaskItemShort.FromJObject(GetJObjectResponse(response));
+        return PaymentTaskItemShort.FromJObject(ParseResponseToJObject(response));
     }
 }

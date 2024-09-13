@@ -49,37 +49,29 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
     }
     
     
-    public string GetTemporaryAccount() {
+    public async Task<string> GetTemporaryAccount() {
         var account = Address;
-        var nonce = this.GetLedgerNonceOf(account);
+        var nonce = await this.GetLedgerNonceOf(account);
         var message = CommonUtils.GetAccountMessage(
                 account,
                 nonce,
-                this.GetChainId()
+                await this.GetChainId()
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/account/temporary", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "account", account },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/account/temporary", body);
+        var jObject = ParseResponseToJObject(response);
 
         return jObject["temporaryAccount"]!.ToString();
     }
 
-    public PaymentTaskItemShort ApproveNewPayment(
+    public async Task<PaymentTaskItemShort> ApproveNewPayment(
             string paymentId,
             string purchaseId,
             BigInteger amount,
@@ -88,7 +80,7 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
             bool approval
     ) {
         var account = this.Address;
-        var nonce = this.GetLedgerNonceOf(account);
+        var nonce = await this.GetLedgerNonceOf(account);
         var message = GetLoyaltyNewPaymentMessage(
                 paymentId,
                 purchaseId,
@@ -97,27 +89,18 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
                 shopId,
                 account,
                 nonce,
-                this.GetChainId()
+                await this.GetChainId()
         );
         var signature = CommonUtils.SignMessage(this._keyPair, message);
         
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v2/payment/new/approval", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },
             { "approval", approval },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-
-        return PaymentTaskItemShort.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{RelayEndpoint}/v2/payment/new/approval", body);
+        return PaymentTaskItemShort.FromJObject(ParseResponseToJObject(response));
     }
 }

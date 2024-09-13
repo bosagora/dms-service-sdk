@@ -13,16 +13,16 @@ public class ClientTests
     }
 
     [Test]
-    public void Test01_GetChainId()
+    public async Task Test01_GetChainId()
     {
-        var chainId = client.GetChainId();
+        var chainId = await client.GetChainId();
         Assert.That(chainId, Is.EqualTo(215115));
     }
 
     [Test]
-    public void Test02_GetBalanceAccount()
+    public async Task  Test02_GetBalanceAccount()
     {
-        var balance = client.GetBalanceAccount("0x20eB9941Df5b95b1b1AfAc1193c6a075B6191563");
+        var balance = await client.GetBalanceAccount("0x20eB9941Df5b95b1b1AfAc1193c6a075B6191563");
         Assert.Multiple(() =>
         {
             Assert.That(balance.Point.Balance.ToString(), Is.EqualTo("5000000000000000000000000"));
@@ -31,9 +31,9 @@ public class ClientTests
     }
 
     [Test]
-    public void Test03_GetBalancePhone()
+    public async Task  Test03_GetBalancePhone()
     {
-        var balance = client.GetBalancePhone("+82 10-1000-2099");
+        var balance = await client.GetBalancePhone("+82 10-1000-2099");
         Assert.Multiple(() =>
         {
             Assert.That(balance.Point.Balance.ToString(), Is.EqualTo("5000000000000000000000000"));
@@ -42,9 +42,9 @@ public class ClientTests
     }
 
     [Test]
-    public void Test04_GetBalancePhoneHash()
+    public async Task  Test04_GetBalancePhoneHash()
     {
-        var balance = client.GetBalancePhoneHash("0x6e2f492102956a83a350152070be450b44fa19c08455c74b3aa79cc74195d3ba");
+        var balance = await client.GetBalancePhoneHash("0x6e2f492102956a83a350152070be450b44fa19c08455c74b3aa79cc74195d3ba");
 
         Assert.Multiple(() =>
         {
@@ -54,24 +54,24 @@ public class ClientTests
     }
 
     [Test]
-    public void Test05_GetLedgerNonceOf()
+    public async Task  Test05_GetLedgerNonceOf()
     {
-        var nonce = client.GetLedgerNonceOf("0x20eB9941Df5b95b1b1AfAc1193c6a075B6191563");
+        var nonce = await client.GetLedgerNonceOf("0x20eB9941Df5b95b1b1AfAc1193c6a075B6191563");
         Assert.Multiple(() => { Assert.That(nonce, Is.GreaterThanOrEqualTo(0)); });
     }
     
     [Test]
-    public void Test06_GetPhoneHash()
+    public async Task Test06_GetPhoneHash()
     {
-        var message = client.GetPhoneHash("+82 10-9000-5000");
+        var message = await client.GetPhoneHash("+82 10-9000-5000");
         Assert.That(message,
             Is.EqualTo("0x8f01f960fa3bacb03c4217e254a031bd005b1685002a1826141a90f1692ca2c4"));
     }
     
     [Test]
-    public void Test07_GetPhoneHash2()
+    public async Task Test07_GetPhoneHash2()
     {
-        var message = client.GetPhoneHash("");
+        var message = await client.GetPhoneHash("");
         Assert.That(message,
             Is.EqualTo("0x32105b1d0b88ada155176b58ee08b45c31e4f2f7337475831982c313533b880c"));
     }

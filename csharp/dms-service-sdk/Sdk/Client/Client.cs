@@ -37,21 +37,25 @@ public class Client
         _chainId = 0;
     }
 
-    [Obsolete("Obsolete")]
-    protected static HttpWebRequest GetHttpRequest(string url, string method = "GET")
+    protected static async Task<string> GetAsync(string url)
     {
-        var request =
-            (HttpWebRequest)WebRequest.Create(url);
-        request.Method = method;
-        request.ContentType = "application/json; charset=utf-8";
-        return request;
+        var client = new HttpClient();
+        using var response = await client.GetAsync(url);
+    
+        return await response.Content.ReadAsStringAsync();
     }
 
-    protected static JObject GetResponse(HttpWebResponse response)
+    protected static async Task<string> PostAsync(string url, StringContent body)
     {
-        var responseData = new StreamReader(response.GetResponseStream()).ReadToEnd();
+        var client = new HttpClient();
+        using var response = await client.PostAsync(url, body);
+    
+        return await response.Content.ReadAsStringAsync();
+    }
 
-        var jObject = JObject.Parse(responseData);
+    private static JObject ParseResponse(string data)
+    {
+        var jObject = JObject.Parse(data);
         var code = Convert.ToInt32(jObject["code"]!.ToString());
         if (code != 0)
         {
@@ -70,34 +74,33 @@ public class Client
 
         return jObject;
     }
-
-    protected static JObject GetJObjectResponse(HttpWebResponse response)
+    
+    protected static JObject ParseResponseToJObject(string data)
     {
-        var jObject = GetResponse(response);
+        var jObject = ParseResponse(data);
         var res = jObject.GetValue("data")!.ToObject<JObject>();
         if (res == null) throw new Exception("Internal Error : Response is null");
         return res;
     }
     
-    protected static JArray GetJArrayResponse(HttpWebResponse response)
+    protected static JArray ParseResponseToJArray(string data)
     {
-        var jObject = GetResponse(response);
+        var jObject = ParseResponse(data);
         var res = jObject.GetValue("data")!.ToObject<JArray>();
         if (res == null) throw new Exception("Internal Error : Response is null");
         return res;
     }
-
+    
     /**
      * Provide the ID of the chain
      */
-    public long GetChainId()
+    public async Task<long> GetChainId()
     {
         if (_chainId != 0)
             return _chainId;
 
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/chain/side/id");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var data = await GetAsync($"{RelayEndpoint}/v1/chain/side/id");
+        var jObject = ParseResponseToJObject(data);
 
         _chainId = Convert.ToInt64(jObject["chainId"]!.ToString());
         return _chainId;
@@ -107,11 +110,10 @@ public class Client
      * Provide the user's points and token balance information
      * @param account User's wallet address
      */
-    public UserBalanceData GetBalanceAccount(string account)
+    public async Task<UserBalanceData> GetBalanceAccount(string account)
     {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/ledger/balance/account/{account.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/ledger/balance/account/{account.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         var point = jObject.GetValue("point")!.ToObject<JObject>();
         var token = jObject.GetValue("token")!.ToObject<JObject>();
         if (point == null || token == null) throw new Exception("Internal Error : Response is null");
@@ -122,12 +124,10 @@ public class Client
      * Provide the user's points and token balance information
      * @param phoneNumber User's phone number
      */
-    public UserBalanceData GetBalancePhone(string phoneNumber)
+    public async Task<UserBalanceData> GetBalancePhone(string phoneNumber)
     {
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v1/ledger/balance/phone/{phoneNumber.Trim().Replace(" ", "%20")}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/ledger/balance/phone/{phoneNumber.Trim().Replace(" ", "%20")}");
+        var jObject = ParseResponseToJObject(response);
         var point = jObject.GetValue("point")!.ToObject<JObject>();
         var token = jObject.GetValue("token")!.ToObject<JObject>();
         if (point == null || token == null) throw new Exception("Internal Error : Response is null");
@@ -138,11 +138,10 @@ public class Client
      * Provide the user's points and token balance information
      * @param phoneHash User's phone number hash
      */
-    public UserBalanceData GetBalancePhoneHash(string phoneHash)
+    public async Task<UserBalanceData> GetBalancePhoneHash(string phoneHash)
     {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/ledger/balance/phoneHash/{phoneHash.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/ledger/balance/phoneHash/{phoneHash.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         var point = jObject.GetValue("point")!.ToObject<JObject>();
         var token = jObject.GetValue("token")!.ToObject<JObject>();
         if (point == null || token == null) throw new Exception("Internal Error : Response is null");
@@ -154,20 +153,18 @@ public class Client
      * This ensures that the same signature is not repeated. And this value is recorded in Contract and automatically increases by 1.
      * @param account User's wallet address
      */
-    public long GetLedgerNonceOf(string account)
+    public async Task<long >GetLedgerNonceOf(string account)
     {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/ledger/nonce/{account.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/ledger/nonce/{account.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         return Convert.ToInt64(jObject.GetValue("nonce")!.ToString());
     }
 
-    public string GetPhoneHash(string phone)
+    public async Task<string> GetPhoneHash(string phone)
     {
         if (phone.Trim().Equals("")) return CommonUtils.GetPhoneHash("");
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/phone/hash/{phone.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/phone/hash/{phone.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         return jObject.GetValue("phoneHash")!.ToString();
     }
 }

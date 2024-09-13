@@ -39,23 +39,23 @@ public class PaymentClientTest
     }
 
     [Test]
-    public void Test01_Waiting()
+    public async Task Test01_Waiting()
     {
-        Thread.Sleep(3000);
+        await Task.Delay(3000);
     }
 
     [Test]
-    public void Test02_CreateTemporaryAccount()
+    public async Task Test02_CreateTemporaryAccount()
     {
-        temporaryAccount = userClient.GetTemporaryAccount();
+        temporaryAccount = await userClient.GetTemporaryAccount();
         System.Console.WriteLine($"Temporary Account: {temporaryAccount}");
     }
 
     [Test]
-    public void Test03_OpenNewPayment()
+    public async Task  Test03_OpenNewPayment()
     {
         var purchaseId = CommonUtils.GetSamplePurchaseId();
-        paymentItem = paymentClient.OpenNewPayment(
+        paymentItem = await paymentClient.OpenNewPayment(
             purchaseId,
             temporaryAccount,
             Amount.Make("1_000").Value,
@@ -68,15 +68,15 @@ public class PaymentClientTest
     }
     
     [Test]
-    public void Test04_Waiting()
+    public async Task Test04_Waiting()
     {
-        Thread.Sleep(1000);
+        await Task.Delay(1000);
     }
     
     [Test]
-    public void Test05_ApproveNewPayment()
+    public async Task  Test05_ApproveNewPayment()
     {
-        var res = userClient.ApproveNewPayment(
+        var res = await userClient.ApproveNewPayment(
             paymentItem.PaymentId,
             paymentItem.PurchaseId,
             paymentItem.Amount,
@@ -88,15 +88,15 @@ public class PaymentClientTest
     }
 
     [Test]
-    public void Test06_Waiting()
+    public async Task Test06_Waiting()
     {
-        Thread.Sleep(3000);
+       await Task.Delay(3000);
     }
     
     [Test]
-    public void Test07_CloseNewPayment()
+    public async Task  Test07_CloseNewPayment()
     {
-        var res = paymentClient.CloseNewPayment(
+        var res = await paymentClient.CloseNewPayment(
             paymentItem.PaymentId,
             true
         );
@@ -104,15 +104,15 @@ public class PaymentClientTest
     }
 
     [Test]
-    public void Test08_Waiting()
+    public async Task Test08_Waiting()
     {
-        Thread.Sleep(3000);
+        await Task.Delay(3000);
     }
 
     [Test]
-    public void Test09_OpenCancelPayment()
+    public async Task Test09_OpenCancelPayment()
     {
-        var res = paymentClient.OpenCancelPayment(
+        var res = await paymentClient.OpenCancelPayment(
             paymentItem.PaymentId,
             terminalID
         );
@@ -121,15 +121,15 @@ public class PaymentClientTest
     }
     
     [Test]
-    public void Test10_Waiting()
+    public async Task Test10_Waiting()
     {
-        Thread.Sleep(1000);
+        await Task.Delay(1000);
     }
     
     [Test]
-    public void Test11_ApproveCancelPayment()
+    public async Task Test11_ApproveCancelPayment()
     {
-        var res = shopClient.ApproveCancelPayment(
+        var res = await shopClient.ApproveCancelPayment(
             paymentItem.PaymentId,
             paymentItem.PurchaseId,
             true
@@ -138,15 +138,15 @@ public class PaymentClientTest
     }
 
     [Test]
-    public void Test12_Waiting()
+    public async Task Test12_Waiting()
     {
-        Thread.Sleep(3000);
+        await Task.Delay(3000);
     }
     
     [Test]
-    public void Test13_CloseCancelPayment()
+    public async Task Test13_CloseCancelPayment()
     {
-        var res = paymentClient.CloseCancelPayment(
+        var res = await paymentClient.CloseCancelPayment(
             paymentItem.PaymentId,
             true
         );
@@ -154,9 +154,9 @@ public class PaymentClientTest
     }
 
     [Test]
-    public void Test14_Waiting()
+    public async Task Test14_Waiting()
     {
-        Thread.Sleep(3000);
+        await Task.Delay(3000);
         collector.Stop();
     }
 }

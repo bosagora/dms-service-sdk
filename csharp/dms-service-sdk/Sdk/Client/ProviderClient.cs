@@ -19,11 +19,10 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * This ensures that the same signature is not repeated. And this value is recorded in Contract and automatically increases by 1.
      * @param account User's wallet address
      */
-    public bool IsProvider(string account)
+    public async Task<bool> IsProvider(string account)
     {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/provider/status/{account.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/provider/status/{account.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         return Convert.ToBoolean(jObject.GetValue("enable")!.ToString());
     }
 
@@ -33,34 +32,28 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * The assistant does not have the authority to deposit and withdraw, only has the authority to provide points.
      * @param account Address of wallet for the agent
      */
-    public string SetAgent(string account)
+    public async Task<string> SetAgent(string account)
     {
-        var nonce = GetLedgerNonceOf(Address);
+        var nonce = await GetLedgerNonceOf(Address);
         var message = CommonUtils.GetRegisterAssistanceMessage(
             Address,
             account,
             nonce,
-            GetChainId()
+            await GetChainId()
         );
         var signature = CommonUtils.SignMessage(_keyPair, message);
 
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v1/provider/assistant/register", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "provider", Address },
             { "assistant", account },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
+        var response =
+            await PostAsync($"{RelayEndpoint}/v1/provider/assistant/register", body);
 
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var jObject = ParseResponseToJObject(response);
         return jObject.GetValue("txHash")!.ToString();
     }
 
@@ -68,11 +61,10 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * Provide the agent's address for the registered wallet(this.wallet)
      * @param provider This is provider's wallet address
      */
-    public string GetAgent(string provider)
+    public async Task<string> GetAgent(string provider)
     {
-        var request = GetHttpRequest($"{RelayEndpoint}/v1/provider/assistant/{provider.Trim()}");
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await GetAsync($"{RelayEndpoint}/v1/provider/assistant/{provider.Trim()}");
+        var jObject = ParseResponseToJObject(response);
         return jObject.GetValue("assistant")!.ToString();
     }
 
@@ -80,9 +72,9 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * Provide the agent's address for the registered wallet(this.wallet)
      * @param provider This is provider's wallet address
      */
-    public string GetAgent()
+    public async Task<string> GetAgent()
     {
-        return GetAgent(Address);
+        return await GetAgent(Address);
     }
 
     /**
@@ -92,31 +84,23 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * @param receiver - wallet address of the person who will receive the points
      * @param amount - amount of points
      */
-    public string ProvideToAddress(string provider, string receiver, BigInteger amount)
+    public async Task<string> ProvideToAddress(string provider, string receiver, BigInteger amount)
     {
         var message =
-            CommonUtils.GetProvidePointToAddressMessage(provider, receiver, amount, GetLedgerNonceOf(Address),
-                GetChainId());
+            CommonUtils.GetProvidePointToAddressMessage(provider, receiver, amount, await GetLedgerNonceOf(Address),
+                await GetChainId());
         var signature = CommonUtils.SignMessage(_keyPair, message);
 
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v1/provider/send/account", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "provider", provider },
             { "receiver", receiver },
             { "amount", amount.ToString() },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await PostAsync($"{RelayEndpoint}/v1/provider/send/account", body);
+        var jObject = ParseResponseToJObject(response);
         return jObject.GetValue("txHash")!.ToString();
     }
 
@@ -127,32 +111,24 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      * @param receiver - phone number of the person who will receive the points
      * @param amount - amount of points
      */
-    public string ProvideToPhone(string provider, string receiver, BigInteger amount)
+    public async Task<string> ProvideToPhone(string provider, string receiver, BigInteger amount)
     {
-        var phoneHash = GetPhoneHash(receiver);
+        var phoneHash = await GetPhoneHash(receiver);
         var message =
-            CommonUtils.GetProvidePointToPhoneMessage(provider, phoneHash, amount, GetLedgerNonceOf(Address),
-                GetChainId());
+            CommonUtils.GetProvidePointToPhoneMessage(provider, phoneHash, amount, await GetLedgerNonceOf(Address),
+                await GetChainId());
         var signature = CommonUtils.SignMessage(_keyPair, message);
 
-        var request =
-            GetHttpRequest($"{RelayEndpoint}/v1/provider/send/phoneHash", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             { "provider", provider },
             { "receiver", phoneHash },
             { "amount", amount.ToString() },
             { "signature", signature }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        var jObject = GetJObjectResponse(response);
+        var response = await PostAsync($"{RelayEndpoint}/v1/provider/send/phoneHash", body);
+        var jObject = ParseResponseToJObject(response);
         return jObject.GetValue("txHash")!.ToString();
     }
 }

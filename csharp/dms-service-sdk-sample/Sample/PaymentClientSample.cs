@@ -29,24 +29,24 @@ namespace Dms.Service.Sdk.Sample
                 "0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874");
         }
 
-        private void Test01_Waiting()
+        private async Task Test01_Waiting()
         {
             Console.WriteLine("Test01_Waiting");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
         }
 
-        private void Test02_CreateTemporaryAccount()
+        private async Task Test02_CreateTemporaryAccount()
         {
             Console.WriteLine("Test02_CreateTemporaryAccount");
-            _temporaryAccount = _userClient.GetTemporaryAccount();
+            _temporaryAccount = await _userClient.GetTemporaryAccount();
             System.Console.WriteLine($"Temporary Account: {_temporaryAccount}");
         }
 
-        private void Test03_OpenNewPayment()
+        private async Task Test03_OpenNewPayment()
         {
             Console.WriteLine("Test03_OpenNewPayment");
             var purchaseId = CommonUtils.GetSamplePurchaseId();
-            _paymentItem = _paymentClient.OpenNewPayment(
+            _paymentItem = await _paymentClient.OpenNewPayment(
                 purchaseId,
                 _temporaryAccount,
                 Amount.Make("1_000").Value,
@@ -64,16 +64,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test04_Waiting()
+        private async Task Test04_Waiting()
         {
             Console.WriteLine("Test04_Waiting");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
         }
 
-        private void Test05_ApproveNewPayment()
+        private async Task Test05_ApproveNewPayment()
         {
             Console.WriteLine("Test05_ApproveNewPayment");
-            var res = _userClient.ApproveNewPayment(
+            var res = await _userClient.ApproveNewPayment(
                 _paymentItem.PaymentId,
                 _paymentItem.PurchaseId,
                 _paymentItem.Amount,
@@ -87,16 +87,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test06_Waiting()
+        private async Task Test06_Waiting()
         {
             Console.WriteLine("Test06_Waiting");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
         }
 
-        private void Test07_CloseNewPayment()
+        private async Task Test07_CloseNewPayment()
         {
             Console.WriteLine("Test07_CloseNewPayment");
-            var res = _paymentClient.CloseNewPayment(
+            var res = await _paymentClient.CloseNewPayment(
                 _paymentItem.PaymentId,
                 true
             );
@@ -106,16 +106,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test08_Waiting()
+        private async Task Test08_Waiting()
         {
             Console.WriteLine("Test08_Waiting");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
         }
 
-        private void Test09_OpenCancelPayment()
+        private async Task Test09_OpenCancelPayment()
         {
             Console.WriteLine("Test09_OpenCancelPayment");
-            var res = _paymentClient.OpenCancelPayment(
+            var res = await _paymentClient.OpenCancelPayment(
                 _paymentItem.PaymentId,
                 _terminalId
             );
@@ -129,16 +129,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test10_Waiting()
+        private async Task Test10_Waiting()
         {
             Console.WriteLine("Test10_Waiting");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
         }
 
-        private void Test11_ApproveCancelPayment()
+        private async Task Test11_ApproveCancelPayment()
         {
             Console.WriteLine("Test11_ApproveCancelPayment");
-            var res = _shopClient.ApproveCancelPayment(
+            var res = await _shopClient.ApproveCancelPayment(
                 _paymentItem.PaymentId,
                 _paymentItem.PurchaseId,
                 true
@@ -149,16 +149,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test12_Waiting()
+        private async Task Test12_Waiting()
         {
             Console.WriteLine("Test12_Waiting");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
         }
 
-        private void Test13_CloseCancelPayment()
+        private async Task Test13_CloseCancelPayment()
         {
             Console.WriteLine("Test13_CloseCancelPayment");
-            var res = _paymentClient.CloseCancelPayment(
+            var res = await _paymentClient.CloseCancelPayment(
                 _paymentItem.PaymentId,
                 true
             );
@@ -168,29 +168,29 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        private void Test14_Waiting()
+        private async Task Test14_Waiting()
         {
             Console.WriteLine("Test14_Waiting");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
             _collector.Stop();
         }
 
-        public void TestAll()
+        public async Task TestAll()
         {
-            Test01_Waiting();
-            Test02_CreateTemporaryAccount();
-            Test03_OpenNewPayment();
-            Test04_Waiting();
-            Test05_ApproveNewPayment();
-            Test06_Waiting();
-            Test07_CloseNewPayment();
-            Test08_Waiting();
-            Test09_OpenCancelPayment();
-            Test10_Waiting();
-            Test11_ApproveCancelPayment();
-            Test12_Waiting();
-            Test13_CloseCancelPayment();
-            Test14_Waiting();
+            await Test01_Waiting();
+            await Test02_CreateTemporaryAccount();
+            await Test03_OpenNewPayment();
+            await Test04_Waiting();
+            await Test05_ApproveNewPayment();
+            await Test06_Waiting();
+            await Test07_CloseNewPayment();
+            await Test08_Waiting();
+            await Test09_OpenCancelPayment();
+            await Test10_Waiting();
+            await Test11_ApproveCancelPayment();
+            await Test12_Waiting();
+            await Test13_CloseCancelPayment();
+            await Test14_Waiting();
         }
     }
 }

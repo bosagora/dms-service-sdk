@@ -1,60 +1,65 @@
 namespace Dms.Service.Sdk.Event;
 
-public enum ScheduleState {
+public enum ScheduleState 
+{
     None, Starting, Running, Stopping, Stopped
 }
 
 public  class Scheduler
 {
-    private Thread? _thread = null;
     private bool _done = true;
     private ScheduleState _state = ScheduleState.None;
 
-    public void Start() {
-        if (this._thread == null) {
-            this._state = ScheduleState.Starting;
-            this._done = false;
-            this._thread = new Thread(Run);
-            this._thread.Start();
-        }
+    public void Start() 
+    {
+        this._state = ScheduleState.Starting;
+        this._done = false;
+        Task.Run(Run);
     }
 
-    public void Stop() {
+    public void Stop() 
+    {
         this._state = ScheduleState.Stopped;
         this._done = true;
-        this._thread?.Join();
     }
 
-    private void Run() {
 
-        this.OnStart();
-        while (!this._done) {
+    private async Task Run()
+    {
+        await this.OnStart();
+        
+        while (!this._done) 
+        {
             if (this._state == ScheduleState.Stopped) break;
 
             try {
-                this.OnWork();
+                await this.OnWork();
             } catch (Exception) {
-                System.Console.WriteLine("Failed to execute a scheduler");
+                Console.WriteLine("Failed to execute a scheduler");
             }
+            
+            Thread.Sleep(1000);
 
-            Thread.Sleep(100);
-
-            if (this._state == ScheduleState.Stopping) {
+            if (this._state == ScheduleState.Stopping) 
+            {
                 this._state = ScheduleState.Stopped;
             }
         }
-        this.OnStop();
+        await this.OnStop();
     }
 
-    public virtual void OnStart()
+    protected virtual async Task OnStart()
     {
+        await Task.Delay(1);
     }
 
-    public virtual void OnWork()
+    protected virtual async Task OnWork()
     {
+        await Task.Delay(1);
     }
     
-    public virtual void OnStop()
+    protected virtual async Task OnStop()
     {
+        await Task.Delay(1);
     }
 }

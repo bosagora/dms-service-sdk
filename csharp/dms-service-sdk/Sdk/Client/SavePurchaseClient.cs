@@ -44,7 +44,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
      * @param userPhone User's phone number
      * @param details Unit price and accumulated rate of purchased goods
      */
-    public ResponseSavePurchase SaveNewPurchase(
+    public async Task<ResponseSavePurchase> SaveNewPurchase(
         string purchaseId,
         long timestamp,
         long waiting,
@@ -67,7 +67,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             currency,
             shopId,
             adjustedUserAccount,
-            GetPhoneHash(userPhone),
+            await GetPhoneHash(userPhone),
             assetAddress,
             ""
         );
@@ -87,12 +87,9 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             adjustedPurchase.UserAccount,
             adjustedPurchase.UserPhoneHash,
             adjustedPurchase.Sender,
-            GetChainId()
+            await GetChainId()
         );
         adjustedPurchase.PurchaseSignature = CommonUtils.SignMessage(_keyPair, message);
-
-        var request =
-            GetHttpRequest($"{SaveEndpoint}/v2/tx/purchase/new", "POST");
 
         var purchaseObj = new JObject
         {
@@ -129,14 +126,10 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             { "others", othersObj },
             { "details", detailsObj }
         };
-        var body = Encoding.UTF8.GetBytes(json.ToString());
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return ResponseSavePurchase.FromJObject(GetJObjectResponse(response));
+        var body = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+        
+        var response = await PostAsync($"{SaveEndpoint}/v2/tx/purchase/new", body);
+        return ResponseSavePurchase.FromJObject(ParseResponseToJObject(response));
     }
 
     /**
@@ -145,7 +138,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
      * @param timestamp Purchase Time
      * @param waiting Wait time (in seconds) for points to be provided
      */
-    public ResponseSavePurchase SaveCancelPurchase(
+    public async Task<ResponseSavePurchase> SaveCancelPurchase(
         string purchaseId,
         long timestamp,
         long waiting
@@ -159,15 +152,12 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
         var message = CommonUtils.GetCancelPurchaseDataMessage(
             adjustedPurchase.PurchaseId,
             adjustedPurchase.Sender,
-            GetChainId()
+            await GetChainId()
         );
         adjustedPurchase.PurchaseSignature = CommonUtils.SignMessage(_keyPair, message);
         var adjustedOthers = new SaveCancelOthers(timestamp, waiting);
 
-        var request =
-            GetHttpRequest($"{SaveEndpoint}/v2/tx/purchase/cancel", "POST");
-
-        var body = Encoding.UTF8.GetBytes(new JObject
+        var body = new StringContent(new JObject
         {
             {
                 "purchase", new JObject()
@@ -184,14 +174,9 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
                     { "waiting", adjustedOthers.Waiting }
                 }
             }
-        }.ToString());
+        }.ToString(), Encoding.UTF8, "application/json");
 
-        using (var stream = request.GetRequestStream())
-        {
-            stream.Write(body, 0, body.Length);
-        }
-
-        var response = (HttpWebResponse)request.GetResponse();
-        return ResponseSavePurchase.FromJObject(GetJObjectResponse(response));
+        var response = await PostAsync($"{SaveEndpoint}/v2/tx/purchase/cancel", body);
+        return ResponseSavePurchase.FromJObject(ParseResponseToJObject(response));
     }
 }

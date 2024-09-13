@@ -19,36 +19,36 @@ namespace Dms.Service.Sdk.Sample
                 "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
         }
 
-        public void Test01_IsProvider()
+        private async Task Test01_IsProvider()
         {
             Console.WriteLine("Test01_IsProvider");
-            var value = providerClient.IsProvider(providerClient.Address);
+            var value = await providerClient.IsProvider(providerClient.Address);
             if (!value)
             {
                 Console.WriteLine("Error");
             }
         }
 
-        public void Test02_ClearAgent()
+        private async Task Test02_ClearAgent()
         {
             Console.WriteLine("Test02_ClearAgent");
-            providerClient.SetAgent(AddressUtil.ZERO_ADDRESS);
-            if (!providerClient.GetAgent().Equals(AddressUtil.ZERO_ADDRESS))
+            await providerClient.SetAgent(AddressUtil.ZERO_ADDRESS);
+            if (!(await providerClient.GetAgent()).Equals(AddressUtil.ZERO_ADDRESS))
             {
                 Console.WriteLine("Error");
             }
         }
 
-        public void Test03_ProvideToAddress()
+        private async Task Test03_ProvideToAddress()
         {
             Console.WriteLine("Test03_ProvideToAddress");
             var receiver = "0xB6f69F0e9e70034ba0578C542476cC13eF739269";
-            var res1 = providerClient.GetBalanceAccount(receiver);
+            var res1 = await providerClient.GetBalanceAccount(receiver);
             var oldBalance = res1.Point.Balance;
 
             var amount = Amount.Make("100").Value;
-            providerClient.ProvideToAddress(providerClient.Address, receiver, amount);
-            var res2 = providerClient.GetBalanceAccount(receiver);
+            await providerClient.ProvideToAddress(providerClient.Address, receiver, amount);
+            var res2 = await providerClient.GetBalanceAccount(receiver);
 
             if (!res2.Point.Balance.Equals(BigInteger.Add(oldBalance, amount)))
             {
@@ -56,16 +56,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        public void Test04_ProvideToPhone()
+        private async Task Test04_ProvideToPhone()
         {
             Console.WriteLine("Test04_ProvideToPhone");
             var phoneNumber = "+82 10-9000-5000";
-            var res1 = providerClient.GetBalancePhone(phoneNumber);
+            var res1 = await providerClient.GetBalancePhone(phoneNumber);
             var oldBalance = res1.Point.Balance;
             var amount = Amount.Make("100").Value;
 
-            providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
-            var res2 = providerClient.GetBalancePhone(phoneNumber);
+            await providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
+            var res2 = await providerClient.GetBalancePhone(phoneNumber);
 
             if (!res2.Point.Balance.Equals(BigInteger.Add(oldBalance, amount)))
             {
@@ -73,26 +73,26 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        public void Test05_SetNewAgent()
+        private async Task Test05_SetNewAgent()
         {
             Console.WriteLine("Test05_SetNewAgent");
-            providerClient.SetAgent(agentClient.Address);
-            if (!providerClient.GetAgent().Equals(agentClient.Address))
+            await providerClient.SetAgent(agentClient.Address);
+            if (!(await providerClient.GetAgent()).Equals(agentClient.Address))
             {
                 Console.WriteLine("Error");
             }
         }
 
-        public void Test06_ProvideToAddress()
+        private async Task Test06_ProvideToAddress()
         {
             Console.WriteLine("Test06_ProvideToAddress");
             var receiver = "0xB6f69F0e9e70034ba0578C542476cC13eF739269";
-            var res1 = providerClient.GetBalanceAccount(receiver);
+            var res1 = await providerClient.GetBalanceAccount(receiver);
             var oldBalance = res1.Point.Balance;
 
             var amount = Amount.Make("100").Value;
-            agentClient.ProvideToAddress(providerClient.Address, receiver, amount);
-            var res2 = providerClient.GetBalanceAccount(receiver);
+            await agentClient.ProvideToAddress(providerClient.Address, receiver, amount);
+            var res2 = await providerClient.GetBalanceAccount(receiver);
 
             if (!res2.Point.Balance.Equals(BigInteger.Add(oldBalance, amount)))
             {
@@ -100,16 +100,16 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        public void Test07_ProvideToPhone()
+        private async Task Test07_ProvideToPhone()
         {
             Console.WriteLine("Test07_ProvideToPhone");
             var phoneNumber = "+82 10-9000-5000";
-            var res1 = providerClient.GetBalancePhone(phoneNumber);
+            var res1 = await providerClient.GetBalancePhone(phoneNumber);
             var oldBalance = res1.Point.Balance;
             var amount = Amount.Make("100").Value;
 
-            agentClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
-            var res2 = providerClient.GetBalancePhone(phoneNumber);
+            await agentClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
+            var res2 = await providerClient.GetBalancePhone(phoneNumber);
 
             if (!res2.Point.Balance.Equals(BigInteger.Add(oldBalance, amount)))
             {
@@ -117,15 +117,15 @@ namespace Dms.Service.Sdk.Sample
             }
         }
 
-        public void TestAll()
+        public async Task TestAll()
         {
-            Test01_IsProvider();
-            Test02_ClearAgent();
-            Test03_ProvideToAddress();
-            Test04_ProvideToPhone();
-            Test05_SetNewAgent();
-            Test06_ProvideToAddress();
-            Test07_ProvideToPhone();
+            await Test01_IsProvider();
+            await Test02_ClearAgent();
+            await Test03_ProvideToAddress();
+            await Test04_ProvideToPhone();
+            await Test05_SetNewAgent();
+            await Test06_ProvideToAddress();
+            await Test07_ProvideToPhone();
         }
     }
 }
