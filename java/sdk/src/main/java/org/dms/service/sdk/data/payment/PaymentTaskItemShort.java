@@ -6,6 +6,9 @@ import org.json.JSONObject;
 
 import java.math.BigInteger;
 
+/**
+ * Reduction of data generated during the payment process
+ */
 public class PaymentTaskItemShort {
     public String paymentId;
     public String purchaseId;

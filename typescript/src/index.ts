@@ -6,6 +6,7 @@ export {
     IPaymentTaskItem,
     IShopTaskItem,
     ITaskItemCallback,
+    IPurchaseDetail
 } from "./types/";
 export { ProviderClient } from "./client/ProviderClient";
 export { PaymentClient } from "./client/PaymentClient";

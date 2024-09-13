@@ -6,12 +6,30 @@ namespace Dms.Service.Sdk.Client;
 
 using Types;
 
+/// <summary>
+/// The client class of decentralized loyalty services
+/// </summary>
 public class Client
 {
+    /// <summary>
+    /// The endpoint of the relay API server
+    /// </summary>
     protected readonly string RelayEndpoint;
+
+    /// <summary>
+    /// The endpoint of the save purchase API server
+    /// </summary>
     protected readonly string SaveEndpoint;
+
+    /// <summary>
+    /// The Chain ID of side chain
+    /// </summary>
     private long _chainId;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="network">Type of network (mainnet, testnet, localhost)</param>
     public Client(NetWorkType network)
     {
         switch (network)
@@ -37,19 +55,30 @@ public class Client
         _chainId = 0;
     }
 
+    /// <summary>
+    /// HTTP Get
+    /// </summary>
+    /// <param name="url">Endpoint URL</param>
+    /// <returns>HttpWebRequest</returns>
     protected static async Task<string> GetAsync(string url)
     {
         var client = new HttpClient();
         using var response = await client.GetAsync(url);
-    
+
         return await response.Content.ReadAsStringAsync();
     }
 
+    /// <summary>
+    /// HTTP Post
+    /// </summary>
+    /// <param name="url">Endpoint URL</param>
+    /// <param name="body">data</param>
+    /// <returns>HttpWebRequest</returns>
     protected static async Task<string> PostAsync(string url, StringContent body)
     {
         var client = new HttpClient();
         using var response = await client.PostAsync(url, body);
-    
+
         return await response.Content.ReadAsStringAsync();
     }
 
@@ -74,7 +103,7 @@ public class Client
 
         return jObject;
     }
-    
+
     protected static JObject ParseResponseToJObject(string data)
     {
         var jObject = ParseResponse(data);
@@ -90,7 +119,7 @@ public class Client
         if (res == null) throw new Exception("Internal Error : Response is null");
         return res;
     }
-    
+
     /**
      * Provide the ID of the chain
      */

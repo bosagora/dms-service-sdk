@@ -18,46 +18,20 @@ This SDK can be used in the following places.
 
 ## 3. Using with TypeScript
 
-See) https://www.npmjs.com/package/dms-sdk-client
+See - [README.md](typescript%2FREADME.md)
 
 ---
 
 ## 4. Using with Java
 
-### Install gradle
-
-See) https://gradle.org/install
-
-### Publish to MavenLocal
-
-```shell
-./gradlew clean publishToMavenLocal
-```
-You can verify that the library is distributed in the storage `~/.m2/repository`.
-
-### How to use SDK in your project
-
-Please set the contents of the file `build.gradle` as below
-
-``` 
-repositories {
-    mavenLocal()
-}
-
-ependencies {
-    implementation "org.json:json:20231013"
-    implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
-    implementation "org.web3j:core:4.12.1"
-    implementation 'org.dms.service.sdk:core:1.0.0-SNAPSHOT'
-}
-```
+See - [README.md](java%2FREADME.md)
 
 ---
 
 ## 5. Using with C#
 
 
-See) https://www.nuget.org/packages/dms-service-sdk
+See - [README.md](csharp%2FREADME.md)
 
 
 ---
@@ -80,43 +54,17 @@ See) https://www.nuget.org/packages/dms-service-sdk
 
 ## 3. TypeScript 에서 사용하기
 
-참조) https://www.npmjs.com/package/dms-sdk-client
+참조) [README.md](typescript%2FREADME.md)
 
 ---
 
 ## 4. Java 에서 사용하기
 
-### gradle 설치하기
-
-See) https://gradle.org/install
-
-### MavenLocal 에 배포하기
-
-```shell
-./gradlew clean publishToMavenLocal
-```
-이 저장소 `~/.m2/repository` 에서 배포된것을 확인 할 수 있습니다.
-
-### 프로젝트에서 SDK 사용하는 방법
-
-파일 `build.gradle` 에 아래 내용을 추가해 주세요
-
-``` 
-repositories {
-    mavenLocal()
-}
-
-ependencies {
-    implementation "org.json:json:20231013"
-    implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
-    implementation "org.web3j:core:4.12.1"
-    implementation 'org.dms.service.sdk:core:1.0.0-SNAPSHOT'
-}
-```
+참조) [README.md](java%2FREADME.md)
 
 ---
 
 ## 5. C# 에서 사용하기
 
-참조) https://www.nuget.org/packages/dms-service-sdk
+참조) [README.md](csharp%2FREADME.md)
 

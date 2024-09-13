@@ -8,6 +8,10 @@ import { Wallet } from "@ethersproject/wallet";
 
 import URI from "urijs";
 
+/**
+ * The client that processes payments using points.
+ * It has the role of delivering input from the KIOSK to the loyalty system.
+ */
 export class PaymentClient extends Client {
     /**
      * Message repeater's wallet for payment
@@ -15,6 +19,11 @@ export class PaymentClient extends Client {
      */
     private readonly wallet: Wallet;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the payment
+     */
     constructor(network: NetWorkType, privateKey: string) {
         super(network);
         this.wallet = new Wallet(privateKey);

@@ -19,9 +19,13 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * The client that delivers purchase data to the loyalty system to store purchase data in IPFS.
+ * First, you must obtain permission from the loyalty system and register the address of the wallet to be used in the loyalty system.
+ */
 public class SavePurchaseClient extends Client {
     /**
-     * Wallet of asset sender
+     * Message repeater's wallet for saving purchases
      */
     protected final Credentials credentials;
 
@@ -30,6 +34,12 @@ public class SavePurchaseClient extends Client {
      */
     protected final String assetAddress;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the saving purchases
+     * @param assetAddress The wallet address of asset owner
+     */
     public SavePurchaseClient(NetWorkType network, String privateKey, String assetAddress) {
         super(network);
         this.credentials = Credentials.create(ECKeyPair.create(new BigInteger(Numeric.cleanHexPrefix(privateKey), 16)));

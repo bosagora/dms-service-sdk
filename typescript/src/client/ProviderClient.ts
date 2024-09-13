@@ -8,9 +8,21 @@ import { Wallet } from "@ethersproject/wallet";
 
 import URI from "urijs";
 
+/**
+ * The client that is needed to provide a point to the user.
+ * First, you must obtain permission from the loyalty system and register the address of the wallet to be used in the loyalty system.
+ */
 export class ProviderClient extends Client {
+    /**
+     * Message repeater's wallet for providing
+     */
     private readonly wallet: Wallet;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the providing
+     */
     constructor(network: NetWorkType, privateKey: string) {
         super(network);
         this.wallet = new Wallet(privateKey);

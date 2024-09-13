@@ -1,5 +1,5 @@
 import { HTTPClient } from "../network/HTTPClient";
-import { IRawSavePurchaseDetail, ISaveDetail, ISaveOthers, ISavePurchase, NetWorkType } from "../types";
+import { IPurchaseDetail, NetWorkType } from "../types";
 import { BOACoin } from "../utils/Amount";
 import { CommonUtils } from "../utils/CommonUtils";
 import { Client } from "./Client";
@@ -12,9 +12,13 @@ import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 
 import URI from "urijs";
 
+/**
+ * The client that delivers purchase data to the loyalty system to store purchase data in IPFS.
+ * First, you must obtain permission from the loyalty system and register the address of the wallet to be used in the loyalty system.
+ */
 export class SavePurchaseClient extends Client {
     /**
-     * Wallet of asset sender
+     * Message repeater's wallet for saving purchases
      * @private
      */
     private readonly wallet: Wallet;
@@ -25,6 +29,12 @@ export class SavePurchaseClient extends Client {
      */
     private readonly assetAddress: string;
 
+    /**
+     * Constructor
+     * @param network Type of network (mainnet, testnet, localhost)
+     * @param privateKey The private key used in the saving purchases
+     * @param assetAddress The wallet address of asset owner
+     */
     constructor(network: NetWorkType, privateKey: string, assetAddress: string) {
         super(network);
         this.wallet = new Wallet(privateKey);
@@ -58,7 +68,7 @@ export class SavePurchaseClient extends Client {
         shopId: string,
         userAccount: string,
         userPhone: string,
-        details: IRawSavePurchaseDetail[]
+        details: IPurchaseDetail[]
     ): Promise<void> {
         let adjustedUserAccount = userAccount.trim();
         if (adjustedUserAccount !== "") {
@@ -196,4 +206,28 @@ export class SavePurchaseClient extends Client {
         }
         return CommonUtils.zeroGWEI(sum.mul(cashAmount).div(totalAmount).div(10000));
     }
+}
+
+interface ISavePurchase {
+    purchaseId: string;
+    cashAmount: BigNumber;
+    loyalty: BigNumber;
+    currency: string;
+    shopId: string;
+    userAccount: string;
+    userPhoneHash: string;
+    sender: string;
+    purchaseSignature: string;
+}
+
+interface ISaveOthers {
+    totalAmount: BigNumber;
+    timestamp: bigint;
+    waiting: bigint;
+}
+
+interface ISaveDetail {
+    productId: string;
+    amount: BigNumber;
+    providePercent: BigNumber;
 }
