@@ -1,11 +1,11 @@
-namespace Dms.Service.Sdk.Test;
+namespace Dms.Service.Sdk.Sample;
 
 using Client;
 using Types;
 using Utils;
 using System.Numerics;
 
-public class SavePurchaseClientTests
+public class SavePurchaseClientSample
 {
     private SavePurchaseClient client = new SavePurchaseClient(
         NetWorkType.TestNet, 
@@ -22,20 +22,13 @@ public class SavePurchaseClientTests
     private string purchaseId;
     private long timestamp;
 
-    [SetUp]
-    public void Setup()
-    {
-    }
-
-    [Test]
-    public async Task Test01_CheckBalance()
+    private async Task Test01_CheckBalance()
     {
         balance1 = await client.GetBalanceAccount(userAccount);
         System.Console.WriteLine($"Balance: {new Amount(balance1.Point.Balance).ToAmountString()}");
     }
     
-    [Test]
-    public async Task Test02_SaveNewPurchase()
+    private async Task Test02_SaveNewPurchase()
     {
         var res1 = await client.SaveNewPurchase(
             CommonUtils.GetSamplePurchaseId(),
@@ -52,8 +45,7 @@ public class SavePurchaseClientTests
         System.Console.WriteLine($"type: {res1.Type}, sequence: {res1.Sequence}, purchaseId: {res1.PurchaseId}");
     }
 
-    [Test]
-    public async Task Test03_Waiting()
+    private async Task Test03_Waiting()
     {
         var t1 = CommonUtils.GetTimeStamp();
         while(true) {
@@ -71,17 +63,17 @@ public class SavePurchaseClientTests
         }
     }
     
-    [Test]
-    public async Task Test04_CheckBalance()
+    private async Task Test04_CheckBalance()
     {
         balance2 = await client.GetBalanceAccount(userAccount);
-        Assert.That(balance2.Point.Balance,
-            Is.EqualTo(BigInteger.Add(balance1.Point.Balance, Amount.Make("1000").Value)));
+        if (!balance2.Point.Balance.Equals(BigInteger.Add(balance1.Point.Balance, Amount.Make("1000").Value)))
+        {
+            Console.WriteLine("Error");
+        }
         System.Console.WriteLine($"Balance: {new Amount(balance2.Point.Balance).ToAmountString()}");
     }
 
-    [Test]
-    public async Task Test05_SaveNewPurchase()
+    private async Task Test05_SaveNewPurchase()
     {
         purchaseId = CommonUtils.GetSamplePurchaseId();
         timestamp = CommonUtils.GetTimeStamp();
@@ -100,32 +92,43 @@ public class SavePurchaseClientTests
         System.Console.WriteLine($"type: {res2.Type}, sequence: {res2.Sequence}, purchaseId: {res2.PurchaseId}");
     }
     
-    [Test]
-    public async Task Test06_Waiting()
+    private async Task Test06_Waiting()
     {
         await Task.Delay(100);
     }
     
-    [Test]
-    public async Task Test07_SaveCancelPurchase()
+    private async Task Test07_SaveCancelPurchase()
     {
         var res3 = await client.SaveCancelPurchase(purchaseId, timestamp, 3600);
         System.Console.WriteLine($"type: {res3.Type}, sequence: {res3.Sequence}, purchaseId: {res3.PurchaseId}");
     }
     
-    [Test]
-    public async Task Test08_Waiting()
+    private async Task Test08_Waiting()
     {
         await Task.Delay(50000);
     }
     
-    [Test]
-    public async Task Test09_CheckBalance()
+    private async Task Test09_CheckBalance()
     {
         var balance4 = await client.GetBalanceAccount(userAccount);
         System.Console.WriteLine($"Balance: {balance4.Point.Balance.ToString()}");
         
-        Assert.That(balance4.Point.Balance,
-            Is.EqualTo(balance2.Point.Balance));
+        if (!balance4.Point.Balance.Equals(balance2.Point.Balance))
+        {
+            Console.WriteLine("Error");
+        }
+    }
+
+    public async Task TestAll()
+    {
+        await Test01_CheckBalance();
+        await Test02_SaveNewPurchase();
+        await Test03_Waiting();
+        await Test04_CheckBalance();
+        await Test05_SaveNewPurchase();
+        await Test06_Waiting();
+        await Test07_SaveCancelPurchase();
+        await Test08_Waiting();
+        await Test09_CheckBalance();
     }
 }

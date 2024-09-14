@@ -1,5 +1,4 @@
-﻿
-namespace Dms.Service.Sdk.Sample
+﻿namespace Dms.Service.Sdk.Sample
 {
     public static class Program
     {
@@ -16,6 +15,11 @@ namespace Dms.Service.Sdk.Sample
                 var providerSample = new ProviderClientSample();
                 await providerSample.TestAll();
                 Console.WriteLine("End ProviderClient");
+            
+                Console.WriteLine("Start SavePurchaseClient");
+                var savePurchaseSample = new SavePurchaseClientSample();
+                await savePurchaseSample.TestAll();
+                Console.WriteLine("End SavePurchaseClient");
             }
             catch (Exception ex)
             {
@@ -23,7 +27,4 @@ namespace Dms.Service.Sdk.Sample
             }
         }
     }
-
-
-
 }
