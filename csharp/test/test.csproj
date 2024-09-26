@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\dms-service-sdk\dms-service-sdk.csproj"/>
+        <ProjectReference Include="..\sdk\sdk.csproj" />
     </ItemGroup>
 
 </Project>
