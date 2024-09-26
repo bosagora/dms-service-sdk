@@ -1,4 +1,4 @@
-namespace Dms.Service.Sdk.Event;
+namespace Acc.Service.Sdk.Event;
 
 using Types;
 

@@ -1,19 +1,19 @@
 package org.example;
 
-import org.dms.service.sdk.client.Client;
-import org.dms.service.sdk.client.PaymentClient;
-import org.dms.service.sdk.client.SavePurchaseClient;
-import org.dms.service.sdk.data.NetWorkType;
-import org.dms.service.sdk.data.UserBalance;
-import org.dms.service.sdk.data.payment.PaymentInfo;
-import org.dms.service.sdk.data.payment.PaymentTaskItem;
-import org.dms.service.sdk.data.payment.ShopTaskItem;
-import org.dms.service.sdk.data.purchase.PurchaseDetail;
-import org.dms.service.sdk.data.purchase.ResponseSavePurchase;
-import org.dms.service.sdk.event.ITaskEventListener;
-import org.dms.service.sdk.event.TaskEventCollector;
-import org.dms.service.sdk.utils.Amount;
-import org.dms.service.sdk.utils.CommonUtils;
+import org.acc.service.sdk.client.Client;
+import org.acc.service.sdk.client.PaymentClient;
+import org.acc.service.sdk.client.SavePurchaseClient;
+import org.acc.service.sdk.data.NetWorkType;
+import org.acc.service.sdk.data.UserBalance;
+import org.acc.service.sdk.data.payment.PaymentInfo;
+import org.acc.service.sdk.data.payment.PaymentTaskItem;
+import org.acc.service.sdk.data.payment.ShopTaskItem;
+import org.acc.service.sdk.data.purchase.PurchaseDetail;
+import org.acc.service.sdk.data.purchase.ResponseSavePurchase;
+import org.acc.service.sdk.event.ITaskEventListener;
+import org.acc.service.sdk.event.TaskEventCollector;
+import org.acc.service.sdk.utils.Amount;
+import org.acc.service.sdk.utils.CommonUtils;
 
 import java.math.BigInteger;
 

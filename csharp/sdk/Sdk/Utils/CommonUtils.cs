@@ -5,7 +5,7 @@ using Nethereum.Signer;
 using Org.BouncyCastle.Crypto.Digests;
 using Nethereum.Hex.HexConvertors.Extensions;
 
-namespace Dms.Service.Sdk.Utils;
+namespace Acc.Service.Sdk.Utils;
 
 public static class CommonUtils
 {

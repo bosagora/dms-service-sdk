@@ -6,7 +6,7 @@ using System.Numerics;
 using Nethereum.ABI;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace Dms.Service.Sdk.Client;
+namespace Acc.Service.Sdk.Client;
 
 using Utils;
 using Types;

@@ -3,13 +3,13 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>Dms.Service.Sdk</RootNamespace>
+        <RootNamespace>Acc.Service.Sdk</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="dms-service-sdk" Version="1.1.0" />
+      <PackageReference Include="acc-service-sdk" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

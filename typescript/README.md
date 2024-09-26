@@ -1,11 +1,11 @@
-# dms-service-sdk for Typescript
+# acc-service-sdk for Typescript
 
 ## Installation
 
-Use [yarn](https://yarnpkg.com/) to install dms-service-sdk.
+Use [yarn](https://yarnpkg.com/) to install acc-service-sdk.
 
 ```bash
-yarn add dms-service-sdk
+yarn add acc-service-sdk
 ```
 
 ---

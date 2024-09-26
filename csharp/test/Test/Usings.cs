@@ -1,2 +1,2 @@
 global using NUnit.Framework;
-global using Dms.Service.Sdk;
+global using Acc.Service.Sdk;

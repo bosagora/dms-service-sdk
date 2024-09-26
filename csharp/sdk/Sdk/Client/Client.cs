@@ -1,8 +1,8 @@
 using System.Net;
-using Dms.Service.Sdk.Utils;
+using Acc.Service.Sdk.Utils;
 using Newtonsoft.Json.Linq;
 
-namespace Dms.Service.Sdk.Client;
+namespace Acc.Service.Sdk.Client;
 
 using Types;
 

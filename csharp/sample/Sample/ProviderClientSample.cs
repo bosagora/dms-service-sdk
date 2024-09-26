@@ -1,10 +1,10 @@
 using Nethereum.Util;
 using System.Numerics;
-using Dms.Service.Sdk.Client;
-using Dms.Service.Sdk.Types;
-using Dms.Service.Sdk.Utils;
+using Acc.Service.Sdk.Client;
+using Acc.Service.Sdk.Types;
+using Acc.Service.Sdk.Utils;
 
-namespace Dms.Service.Sdk.Sample
+namespace Acc.Service.Sdk.Sample
 {
     public class ProviderClientSample
     {

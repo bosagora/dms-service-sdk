@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Dms.Service.Sdk.Utils;
+namespace Acc.Service.Sdk.Utils;
 
 /// <summary>
 ///     The class that defines the Amount

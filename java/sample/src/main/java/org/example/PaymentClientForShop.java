@@ -1,9 +1,9 @@
 package org.example;
 
-import org.dms.service.sdk.client.PaymentClient;
-import org.dms.service.sdk.data.NetWorkType;
-import org.dms.service.sdk.data.payment.PaymentTaskItemShort;
-import org.dms.service.sdk.utils.CommonUtils;
+import org.acc.service.sdk.client.PaymentClient;
+import org.acc.service.sdk.data.NetWorkType;
+import org.acc.service.sdk.data.payment.PaymentTaskItemShort;
+import org.acc.service.sdk.utils.CommonUtils;
 import org.json.JSONObject;
 import org.web3j.abi.TypeEncoder;
 import org.web3j.abi.datatypes.Address;

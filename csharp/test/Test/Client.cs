@@ -1,4 +1,4 @@
-namespace Dms.Service.Sdk.Test;
+namespace Acc.Service.Sdk.Test;
 
 using Client;
 using Types;

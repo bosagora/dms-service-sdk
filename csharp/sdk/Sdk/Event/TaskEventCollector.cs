@@ -2,7 +2,7 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using static System.Console;
 
-namespace Dms.Service.Sdk.Event;
+namespace Acc.Service.Sdk.Event;
 
 using Client;
 using Types;

@@ -1,4 +1,4 @@
-# dms-service-sdk for JAVA
+# acc-service-sdk for JAVA
 
 ## Installation
 
@@ -26,7 +26,7 @@ dependencies {
     implementation "org.json:json:20231013"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
     implementation "org.web3j:core:4.12.1"
-    implementation 'org.dms.service.sdk:core:1.0.0-SNAPSHOT'
+    implementation 'org.acc.service.sdk:core:1.0.0-SNAPSHOT'
 }
 ```
 

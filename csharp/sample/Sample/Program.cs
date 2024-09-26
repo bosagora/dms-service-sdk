@@ -1,4 +1,4 @@
-﻿namespace Dms.Service.Sdk.Sample
+﻿namespace Acc.Service.Sdk.Sample
 {
     public static class Program
     {

@@ -1,7 +1,7 @@
-using Dms.Service.Sdk.Event;
+using Acc.Service.Sdk.Event;
 using Nethereum.Util;
 
-namespace Dms.Service.Sdk.Test;
+namespace Acc.Service.Sdk.Test;
 
 using Client;
 using Types;

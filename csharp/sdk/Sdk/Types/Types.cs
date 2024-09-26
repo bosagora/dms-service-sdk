@@ -1,7 +1,7 @@
 using System.Numerics;
 using Newtonsoft.Json.Linq;
 
-namespace Dms.Service.Sdk.Types;
+namespace Acc.Service.Sdk.Types;
 
 public enum NetWorkType
 {

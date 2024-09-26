@@ -1,8 +1,8 @@
-# dms-service-sdk for C#
+# acc-service-sdk for C#
 
 ## Installation
 
-See nuget package) https://www.nuget.org/packages/dms-service-sdk
+See nuget package) https://www.nuget.org/packages/acc-service-sdk
 
 ## Features
 A standard development kit provided for interworking with a decentralized loyalty point system.
