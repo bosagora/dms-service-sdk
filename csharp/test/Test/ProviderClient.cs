@@ -9,13 +9,15 @@ using System.Numerics;
 
 public class ProviderClientTests
 {
+    private NetWorkType network = NetWorkType.TestNet;
     private ProviderClient providerClient;
     private ProviderClient agentClient;
 
     public ProviderClientTests()
     {
-        providerClient = new ProviderClient(NetWorkType.TestNet, "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
-        agentClient = new ProviderClient(NetWorkType.TestNet, "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
+        providerClient =
+            new ProviderClient(network, "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
+        agentClient = new ProviderClient(network, "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
     }
 
     [SetUp]
@@ -58,7 +60,7 @@ public class ProviderClientTests
         var res1 = await providerClient.GetBalancePhone(phoneNumber);
         var oldBalance = res1.Point.Balance;
         var amount = Amount.Make("100").Value;
-        
+
         await providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
         var res2 = await providerClient.GetBalancePhone(phoneNumber);
 
@@ -71,7 +73,7 @@ public class ProviderClientTests
         await providerClient.SetAgent(agentClient.Address);
         Assert.That(await providerClient.GetAgent(), Is.EqualTo(agentClient.Address));
     }
-        
+
     [Test]
     public async Task Test06_ProvideToAddress()
     {
@@ -85,7 +87,7 @@ public class ProviderClientTests
 
         Assert.That(res2.Point.Balance, Is.EqualTo(BigInteger.Add(oldBalance, amount)));
     }
-        
+
     [Test]
     public async Task Test07_ProvideToPhone()
     {
@@ -93,7 +95,7 @@ public class ProviderClientTests
         var res1 = await providerClient.GetBalancePhone(phoneNumber);
         var oldBalance = res1.Point.Balance;
         var amount = Amount.Make("100").Value;
-        
+
         await agentClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
         var res2 = await providerClient.GetBalancePhone(phoneNumber);
 

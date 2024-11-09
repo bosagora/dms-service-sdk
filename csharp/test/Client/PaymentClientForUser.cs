@@ -17,7 +17,7 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
 {
     private readonly EthECKey _keyPair = new(privateKey);
     public string Address => _keyPair.GetPublicAddress();
-    
+
     // region Payment
     public static byte[] GetLoyaltyNewPaymentMessage(
         string paymentId,
@@ -47,18 +47,19 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
         digest.DoFinal(message, 0);
         return message;
     }
-    
-    
-    public async Task<string> GetTemporaryAccount() {
+
+
+    public async Task<string> GetTemporaryAccount()
+    {
         var account = Address;
-        var nonce = await this.GetLedgerNonceOf(account);
+        var nonce = await GetLedgerNonceOf(account);
         var message = CommonUtils.GetAccountMessage(
-                account,
-                nonce,
-                await this.GetChainId()
+            account,
+            nonce,
+            await GetChainId()
         );
-        var signature = CommonUtils.SignMessage(this._keyPair, message);
-        
+        var signature = CommonUtils.SignMessage(_keyPair, message);
+
         var body = new StringContent(new JObject
         {
             { "account", account },
@@ -72,27 +73,28 @@ public class PaymentClientForUser(NetWorkType network, string privateKey) : Clie
     }
 
     public async Task<PaymentTaskItemShort> ApproveNewPayment(
-            string paymentId,
-            string purchaseId,
-            BigInteger amount,
-            string currency,
-            string shopId,
-            bool approval
-    ) {
-        var account = this.Address;
-        var nonce = await this.GetLedgerNonceOf(account);
+        string paymentId,
+        string purchaseId,
+        BigInteger amount,
+        string currency,
+        string shopId,
+        bool approval
+    )
+    {
+        var account = Address;
+        var nonce = await GetLedgerNonceOf(account);
         var message = GetLoyaltyNewPaymentMessage(
-                paymentId,
-                purchaseId,
-                amount,
-                currency,
-                shopId,
-                account,
-                nonce,
-                await this.GetChainId()
+            paymentId,
+            purchaseId,
+            amount,
+            currency,
+            shopId,
+            account,
+            nonce,
+            await GetChainId()
         );
-        var signature = CommonUtils.SignMessage(this._keyPair, message);
-        
+        var signature = CommonUtils.SignMessage(_keyPair, message);
+
         var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },

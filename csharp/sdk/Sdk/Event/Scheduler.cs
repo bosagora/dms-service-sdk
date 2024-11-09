@@ -1,51 +1,56 @@
 namespace Acc.Service.Sdk.Event;
 
-public enum ScheduleState 
+public enum ScheduleState
 {
-    None, Starting, Running, Stopping, Stopped
+    None,
+    Starting,
+    Running,
+    Stopping,
+    Stopped
 }
 
-public  class Scheduler
+public class Scheduler
 {
     private bool _done = true;
     private ScheduleState _state = ScheduleState.None;
 
-    public void Start() 
+    public void Start()
     {
-        this._state = ScheduleState.Starting;
-        this._done = false;
+        _state = ScheduleState.Starting;
+        _done = false;
         Task.Run(Run);
     }
 
-    public void Stop() 
+    public void Stop()
     {
-        this._state = ScheduleState.Stopped;
-        this._done = true;
+        _state = ScheduleState.Stopped;
+        _done = true;
     }
 
 
     private async Task Run()
     {
-        await this.OnStart();
-        
-        while (!this._done) 
-        {
-            if (this._state == ScheduleState.Stopped) break;
+        await OnStart();
 
-            try {
-                await this.OnWork();
-            } catch (Exception) {
+        while (!_done)
+        {
+            if (_state == ScheduleState.Stopped) break;
+
+            try
+            {
+                await OnWork();
+            }
+            catch (Exception)
+            {
                 Console.WriteLine("Failed to execute a scheduler");
             }
-            
+
             Thread.Sleep(1000);
 
-            if (this._state == ScheduleState.Stopping) 
-            {
-                this._state = ScheduleState.Stopped;
-            }
+            if (_state == ScheduleState.Stopping) _state = ScheduleState.Stopped;
         }
-        await this.OnStop();
+
+        await OnStop();
     }
 
     protected virtual async Task OnStart()
@@ -57,7 +62,7 @@ public  class Scheduler
     {
         await Task.Delay(1);
     }
-    
+
     protected virtual async Task OnStop()
     {
         await Task.Delay(1);

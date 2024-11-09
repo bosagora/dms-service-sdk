@@ -30,33 +30,37 @@ public class TaskEventCollector(PaymentClient client, ITaskEventListener listene
 {
     private long _sequence = 0;
 
-    protected override async Task OnStart() 
+    protected override async Task OnStart()
     {
         WriteLine("TaskEventCollector:OnStart");
-        try {
-            this._sequence = await client.GetLatestTaskSequence();
-            WriteLine($"Received sequence = {this._sequence}");
-        } catch (Exception) {
+        try
+        {
+            _sequence = await client.GetLatestTaskSequence();
+            WriteLine($"Received sequence = {_sequence}");
+        }
+        catch (Exception)
+        {
             //
         }
     }
 
-    protected override async Task OnWork() 
+    protected override async Task OnWork()
     {
         try
         {
-            var tasks = await client.GetTasks(this._sequence);
-            
+            var tasks = await client.GetTasks(_sequence);
+
             foreach (var t in tasks)
             {
                 var dataType = t["type"]!.ToString();
                 var code = Convert.ToInt32(t["code"]!.ToString());
                 var message = t["message"]!.ToString();
                 var sequence = Convert.ToInt64(t["sequence"]!.ToString());
-                if (sequence > this._sequence) this._sequence = sequence;
+                if (sequence > _sequence) _sequence = sequence;
                 var data = t["data"]!.ToObject<JObject>();
                 if (data == null) continue;
-                if (dataType.Equals("pay_new") || dataType.Equals("pay_cancel")) {
+                if (dataType.Equals("pay_new") || dataType.Equals("pay_cancel"))
+                {
                     var payment = PaymentTaskItem.FromJObject(data);
                     listener.OnNewPaymentEvent(
                         dataType,
@@ -65,7 +69,9 @@ public class TaskEventCollector(PaymentClient client, ITaskEventListener listene
                         sequence,
                         payment
                     );
-                } else {
+                }
+                else
+                {
                     var shop = ShopTaskItem.FromJObject(data);
                     listener.OnNewShopEvent(
                         dataType,
@@ -76,8 +82,11 @@ public class TaskEventCollector(PaymentClient client, ITaskEventListener listene
                     );
                 }
             }
+
             Thread.Sleep(2000);
-        } catch (Exception) {
+        }
+        catch (Exception)
+        {
             //
         }
     }

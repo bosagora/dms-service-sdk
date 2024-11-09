@@ -44,21 +44,22 @@ public class PaymentClientForShop(NetWorkType network, string privateKey, string
     }
 
     public async Task<PaymentTaskItemShort> ApproveCancelPayment(
-            string paymentId,
-            string purchaseId,
-            bool approval
-    ) {
-        var account = this.Address;
-        var nonce = await this.GetLedgerNonceOf(account);
+        string paymentId,
+        string purchaseId,
+        bool approval
+    )
+    {
+        var account = Address;
+        var nonce = await GetLedgerNonceOf(account);
         var message = GetLoyaltyCancelPaymentMessage(
-                paymentId,
-                purchaseId,
-                account,
-                nonce,
-                await this.GetChainId()
+            paymentId,
+            purchaseId,
+            account,
+            nonce,
+            await GetChainId()
         );
-        var signature = CommonUtils.SignMessage(this._keyPair, message);
-        
+        var signature = CommonUtils.SignMessage(_keyPair, message);
+
         var body = new StringContent(new JObject
         {
             { "paymentId", paymentId },

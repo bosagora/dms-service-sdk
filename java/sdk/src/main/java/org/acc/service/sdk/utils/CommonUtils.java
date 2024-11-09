@@ -5,6 +5,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import org.jetbrains.annotations.NotNull;
 import org.web3j.abi.TypeEncoder;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.DynamicArray;
 import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Bytes32;
@@ -15,6 +16,8 @@ import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonUtils {
     @NotNull
@@ -70,7 +73,7 @@ public class CommonUtils {
         return Hash.sha3(Numeric.hexStringToByteArray(value));
     }
 
-    public static byte[] getRegisterAssistanceMessage(
+    public static byte[] getRegisterAgentMessage(
             String provider,
             String assistance,
             long nonce,
@@ -203,6 +206,105 @@ public class CommonUtils {
                         new Utf8String(purchaseId),
                         new Address(sender),
                         new Uint256(chainId)
+                )
+        );
+        return Hash.sha3(Numeric.hexStringToByteArray(value));
+    }
+
+    public static byte[] getCollectSettlementAmountMultiClientMessage(
+            String managerShopId,
+            ArrayList<String> clientShopIdList,
+            long nonce,
+            long chainId
+    ) {
+        List<Bytes32> clientIdList = new ArrayList<>();
+        for (String clientId : clientShopIdList) {
+            clientIdList.add(new Bytes32(Numeric.hexStringToByteArray(clientId)));
+        }
+        String value = TypeEncoder.encode(
+                new DynamicStruct(
+                        new Utf8String("CollectSettlementAmountMultiClient"),
+                        new Bytes32(Numeric.hexStringToByteArray(managerShopId)),
+                        new DynamicArray<>(Bytes32.class, clientIdList),
+                        new Uint256(chainId),
+                        new Uint256(nonce)
+                )
+        );
+
+        return Hash.sha3(Numeric.hexStringToByteArray(value));
+    }
+
+    public static byte[] getShopRefundMessage(
+            String shopId,
+            BigInteger amount,
+            long nonce,
+            long chainId
+    ) {
+        String value = TypeEncoder.encode(
+                new DynamicStruct(
+                        new Bytes32(Numeric.hexStringToByteArray(shopId)),
+                        new Uint256(amount),
+                        new Uint256(chainId),
+                        new Uint256(nonce)
+                )
+        );
+        return Hash.sha3(Numeric.hexStringToByteArray(value));
+    }
+
+    public static byte[] getTransferMessage(
+            long chainId,
+            String tokenAddress,
+            String from,
+            String to,
+            BigInteger amount,
+            long nonce,
+            long expiry
+    ) {
+        String value = TypeEncoder.encode(
+                new DynamicStruct(
+                        new Uint256(chainId),
+                        new Address(tokenAddress),
+                        new Address(from),
+                        new Address(to),
+                        new Uint256(amount),
+                        new Uint256(nonce),
+                        new Uint256(expiry)
+                )
+        );
+        return Hash.sha3(Numeric.hexStringToByteArray(value));
+    }
+
+    public static byte[] getSetSettlementManagerMessage(
+            String shopId,
+            String managerId,
+            long nonce,
+            long chainId
+    ) {
+        String value = TypeEncoder.encode(
+                new DynamicStruct(
+                        new Utf8String("SetSettlementManager"),
+                        new Bytes32(Numeric.hexStringToByteArray(shopId)),
+                        new Bytes32(Numeric.hexStringToByteArray(managerId)),
+                        new Uint256(chainId),
+                        new Uint256(nonce)
+                )
+        );
+        return Hash.sha3(Numeric.hexStringToByteArray(value));
+    }
+
+    public static byte[] getRemoveSettlementManagerMessage(
+            String shopId,
+            long nonce,
+            long chainId
+    ) {
+        String managerId = "0x0000000000000000000000000000000000000000000000000000000000000000";
+        String value = TypeEncoder.encode(
+                new DynamicStruct(
+                        new Utf8String("RemoveSettlementManager"),
+                        new Bytes32(Numeric.hexStringToByteArray(shopId)),
+                        new Bytes32(Numeric.hexStringToByteArray(managerId)),
+                        new Uint256(chainId),
+                        new Uint256(nonce)
                 )
         );
         return Hash.sha3(Numeric.hexStringToByteArray(value));

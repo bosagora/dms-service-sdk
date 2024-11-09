@@ -5,8 +5,10 @@
 See nuget package) https://www.nuget.org/packages/acc-service-sdk
 
 ## Features
+
 A standard development kit provided for interworking with a decentralized loyalty point system.
 This SDK can be used in the following places.
+
 1. It can be used when implementing the function of delivering purchase information paid by a KIOSK or POS.
 2. It can be used when implementing the ability to purchase products using loyalty points.
 3. It can be used when implementing a method in which partners deposit tokens and then provide points to users.
@@ -19,10 +21,13 @@ See [API Docs - https://save.test.acccoin.io/docs/](https://save.test.acccoin.io
 
 This is a function used by partners that support the payment system.  
 The test net of the loyalty system is ready.  
-You can proceed with the development using the test net and switch to the main net at the time the development is completed.  
-Please create a wallet to be used for this feature, and forward the address of the wallet to the operations team of the loyalty system.  
-The private key of the wallet, which can be used on testnet, is "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276".  
-Please make the wallet of the main net yourself and deliver only its address to the operation team.  
+You can proceed with the development using the test net and switch to the main net at the time the development is
+completed.  
+Please create a wallet to be used for this feature, and forward the address of the wallet to the operations team of the
+loyalty system.  
+The private key of the wallet, which can be used on testnet, is "
+0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276".  
+Please make the wallet of the main net yourself and deliver only its address to the operation team.
 
 ### Create Client Module
 
@@ -54,6 +59,7 @@ await client.SaveNewPurchase(
 ```
 
 ### Save Cancel Purchase Data
+
 ```cs
 await client.SaveCancelPurchase(purchaseId, timestamp, 3600);
 ```
@@ -65,9 +71,12 @@ await client.SaveCancelPurchase(purchaseId, timestamp, 3600);
 See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Payment)
 
 This is a necessary function to build a point payment system.  
-Please create a wallet to be used for payment, and forward the address of the wallet to the operations team of the loyalty system.  
-The private key of the wallet, which can be used on testnet, is "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276".  
-Please make the wallet of the main net yourself and deliver only its address to the operation team.  
+Please create a wallet to be used for payment, and forward the address of the wallet to the operations team of the
+loyalty system.  
+The private key of the wallet, which can be used on testnet, is "
+0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276".  
+Please make the wallet of the main net yourself and deliver only its address to the operation team.
+
 ### Create Client for Payment
 
 ```cs
@@ -115,11 +124,13 @@ collector = new TaskEventCollector(paymentClient, listener);
 ```
 
 ### Start Event Collector
+
 ```cs
 collector.Start();
 ```
 
 ### Open New Payment
+
 ```cs
 var purchaseId = CommonUtils.GetSamplePurchaseId();
 var paymentItem = await paymentClient.OpenNewPayment(
@@ -133,21 +144,25 @@ var paymentItem = await paymentClient.OpenNewPayment(
 ```
 
 ### Close New Payment
+
 ```cs
 await paymentClient.CloseNewPayment(paymentItem.PaymentId, true);
 ```
 
 ### Open Cancel Payment
+
 ```cs
 await paymentClient.OpenCancelPayment(paymentItem.PaymentId, terminalId);
 ```
 
 ### Close Cancel Payment
+
 ```cs
 await paymentClient.CloseCancelPayment(paymentItem.PaymentId, true);
 ```
 
 ### Stop Event Collector
+
 ```cs
 collector.Stop();
 ```
@@ -166,7 +181,8 @@ And if you register the agent's address, you don't have to provide the private k
 
 ### Create Client for provide without agent
 
-If the agent is not used, the private key of the provider in which the asset is stored should be provided to the development team
+If the agent is not used, the private key of the provider in which the asset is stored should be provided to the
+development team
 
 ```cs
 var providerClient = new ProviderClient(NetWorkType.TestNet,
@@ -188,7 +204,6 @@ var phoneNumber = "+82 10-9000-5000";
 var amount = Amount.Make("100").Value;
 await providerClient.ProvideToPhone(providerClient.Address, phoneNumber, amount);
 ```
-
 
 ### Create Client for provide with agent
 

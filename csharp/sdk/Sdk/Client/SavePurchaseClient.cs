@@ -127,7 +127,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             { "details", detailsObj }
         };
         var body = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-        
+
         var response = await PostAsync($"{SaveEndpoint}/v2/tx/purchase/new", body);
         return ResponseSavePurchase.FromJObject(ParseResponseToJObject(response));
     }
