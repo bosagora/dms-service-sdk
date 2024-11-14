@@ -19,7 +19,7 @@ import java.util.Hashtable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SettlementClientTest {
-    private final NetWorkType network = NetWorkType.localhost;
+    private final NetWorkType network = NetWorkType.testnet;
     private Hashtable<NetWorkType, String> AccessKeys;
     private Hashtable<NetWorkType, String> AssetAddresses;
     private ArrayList<ShopData> shops;
@@ -79,7 +79,7 @@ class SettlementClientTest {
     }
 
     void SavePurchase() {
-        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(NetWorkType.localhost, AccessKeys.get(network), AssetAddresses.get(network));
+        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(network, AccessKeys.get(network), AssetAddresses.get(network));
 
         try {
             // Check Balance
@@ -258,12 +258,9 @@ class SettlementClientTest {
     void Settlement05_CollectSettlementAmount() {
         System.out.println("[ Settlement05_CollectSettlementAmount ]");
         try {
-            var shopIdList = new ArrayList<String>();
-            for (ShopData shop : activeShops)
-            {
-                shopIdList.add(shop.shopId);
-            }
-            settlementClient.collectSettlementAmountMultiClient(shopIdList);
+            var clientLength = settlementClient.getSettlementClientLength();
+            var clientList = settlementClient.getSettlementClientList(0, clientLength);
+            settlementClient.collectSettlementAmountMultiClient(clientList);
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
         }

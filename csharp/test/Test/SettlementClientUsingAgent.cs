@@ -9,7 +9,7 @@ using System.Numerics;
 
 public class SettlementClientUsingAgentTests
 {
-    private NetWorkType network = NetWorkType.LocalHost;
+    private NetWorkType network = NetWorkType.TestNet;
     private Dictionary<NetWorkType, string> AccessKeys;
     private Dictionary<NetWorkType, string> AssetAddresses;
     private SavePurchaseClient savePurchaseClient;
@@ -254,8 +254,10 @@ public class SettlementClientUsingAgentTests
     [Test]
     public async Task Test12_CollectSettlementAmount()
     {
-        string[] ids = settlementClientForShops.Select(s => s.ShopId).ToArray();
-        await refundAgent.CollectSettlementAmountMultiClient(ids);
+        var count = await refundAgent.GetSettlementClientLength();
+        Assert.That(count, Is.EqualTo(6));
+        var clients = await refundAgent.GetSettlementClientList(0, 6);
+        await refundAgent.CollectSettlementAmountMultiClient(clients);
     }
 
     [Test]
