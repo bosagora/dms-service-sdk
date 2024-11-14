@@ -19,7 +19,7 @@ import java.util.Hashtable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SettlementClientUsingAgentTest {
-    private final NetWorkType network = NetWorkType.localhost;
+    private final NetWorkType network = NetWorkType.testnet;
     private Hashtable<NetWorkType, String> AccessKeys;
     private Hashtable<NetWorkType, String> AssetAddresses;
     private ArrayList<ShopData> shops;
@@ -82,7 +82,7 @@ class SettlementClientUsingAgentTest {
     }
 
     void SavePurchase() {
-        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(NetWorkType.localhost, AccessKeys.get(network), AssetAddresses.get(network));
+        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(network, AccessKeys.get(network), AssetAddresses.get(network));
 
         try {
             // Check Balance
@@ -183,7 +183,7 @@ class SettlementClientUsingAgentTest {
                 var res2 = client.closeNewPayment(paymentItem.paymentId, true);
                 assertEquals(res2.paymentId, paymentItem.paymentId);
 
-                // Waiting...
+                // Waiting...f
                 System.out.println("[ Waiting... ]");
                 Thread.sleep(3000);
             }
@@ -261,11 +261,9 @@ class SettlementClientUsingAgentTest {
     void Settlement05_CollectSettlementAmount() {
         System.out.println("[ Settlement05_CollectSettlementAmount ]");
         try {
-            var shopIdList = new ArrayList<String>();
-            for (ShopData shop : activeShops) {
-                shopIdList.add(shop.shopId);
-            }
-            refundAgent.collectSettlementAmountMultiClient(shopIdList);
+            var clientLength = refundAgent.getSettlementClientLength();
+            var clientList = refundAgent.getSettlementClientList(0, clientLength);
+            refundAgent.collectSettlementAmountMultiClient(clientList);
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
         }
