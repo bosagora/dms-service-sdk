@@ -81,29 +81,55 @@ export class Amount {
      */
     public toBOAString(): string {
         const factor = BigNumber.from(10).pow(this._decimal);
-        const integral = this._value.div(factor);
-        const decimal = this._value.sub(integral.mul(factor));
+        const isNegative = this._value.isNegative();
+        const absValue = isNegative ? this._value.abs() : this._value;
+
+        const integral = absValue.div(factor);
+        const decimal = absValue.mod(factor);
+
         const integral_string = integral.toString();
         let decimal_string = decimal.toString();
-        if (decimal_string.length < this._decimal) decimal_string = decimal_string.padStart(this._decimal, "0");
-        return `${integral_string}.${decimal_string}`;
+        if (decimal_string.length < this._decimal) {
+            decimal_string = decimal_string.padStart(this._decimal, "0");
+        }
+
+        const result = `${integral_string}.${decimal_string}`;
+        return isNegative ? `-${result}` : result;
     }
 
     public toDisplayString(comma: boolean = false, precision: number = 0): string {
+        if (precision < 0) throw new Error("Precision cannot be negative");
+
         const factor = BigNumber.from(10).pow(this._decimal);
         const share = this._value.div(factor);
         const remain = this._value.sub(share.mul(factor));
-        const tx_share = comma
-            ? share.toNumber().toLocaleString("en-US", { maximumFractionDigits: 7 })
-            : share.toString();
+
+        // 큰 숫자도 안전하게 처리
+        const tx_share = comma ? share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : share.toString();
+
         if (remain.eq(BigNumber.from(0))) {
             return tx_share;
         } else {
             let tx_remain = remain.toString();
-            if (tx_remain.length < this._decimal) tx_remain = tx_remain.padStart(this._decimal, "0");
-            if (precision !== undefined) tx_remain = tx_remain.substring(0, precision);
-            if (tx_remain.length > 0) return tx_share + "." + tx_remain.replace(/0+$/g, "");
-            else return tx_share;
+            if (tx_remain.length < this._decimal) {
+                tx_remain = tx_remain.padStart(this._decimal, "0");
+            }
+
+            // precision이 지정된 경우 반올림 처리
+            if (precision > 0) {
+                const roundingPoint = tx_remain.charAt(precision);
+                tx_remain = tx_remain.substring(0, precision);
+                if (parseInt(roundingPoint) >= 5) {
+                    // 반올림 로직 추가
+                    const remainNum = BigNumber.from(tx_remain);
+                    tx_remain = remainNum.add(1).toString().padStart(precision, "0");
+                }
+            }
+
+            if (tx_remain.length > 0) {
+                return tx_share + "." + tx_remain.replace(/0+$/g, "");
+            }
+            return tx_share;
         }
     }
 }
