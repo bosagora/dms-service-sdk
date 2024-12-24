@@ -24,6 +24,8 @@ describe("Test of ProviderClient", function () {
 
             const res2 = await agentClient.getBalanceAccount(receiver);
             assert.deepStrictEqual(res2.point.balance, oldBalance.add(amount));
+        } else {
+            console.log("Not Provider");
         }
     });
 
@@ -39,6 +41,8 @@ describe("Test of ProviderClient", function () {
 
             const res2 = await agentClient.getBalancePhone(phoneNumber);
             assert.deepStrictEqual(res2.point.balance, oldBalance.add(amount));
+        } else {
+            console.log("Not Provider");
         }
     });
 });
