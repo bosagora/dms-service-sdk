@@ -104,4 +104,10 @@ describe("Test of ProviderClient", function () {
             assert.deepStrictEqual(res2.point.balance, oldBalance.add(amount));
         }
     });
+
+    it("Convert", async () => {
+        const amount = BOACoin.make(1).value;
+        const amount2 = await agentClient.convert(amount, "usd", "point");
+        console.log(amount2.toString());
+    });
 });

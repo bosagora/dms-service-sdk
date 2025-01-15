@@ -293,4 +293,26 @@ export class Client {
         }
         return BigNumber.from(response.data.data.balance);
     }
+
+    /**
+     * 환률변환
+     * @param amount
+     * @param from
+     * @param to
+     */
+    public async convert(amount: BigNumber, from: string, to: string): Promise<BigNumber> {
+        const agent = new HTTPClient({});
+        const response = await agent.get(
+            URI(this.endpoints.relay)
+                .directory("/v1/currency/convert")
+                .addQuery("amount", amount.toString())
+                .addQuery("from", from)
+                .addQuery("to", to)
+                .toString()
+        );
+        if (response.data.code !== 0) {
+            throw new Error(response.data.error?.message);
+        }
+        return BigNumber.from(response.data.data.amount);
+    }
 }
