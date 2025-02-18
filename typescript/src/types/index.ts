@@ -191,3 +191,8 @@ export interface IChainInfo {
         loyaltyBridge: string;
     };
 }
+
+export interface IClientKey {
+    address: string;
+    privateKey: string;
+}

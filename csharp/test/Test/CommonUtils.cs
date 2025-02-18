@@ -47,4 +47,12 @@ public class CommonUtilsTest
         Assert.That(timeStamp,
             Is.LessThan(2000000000));
     }
+    
+    [Test]
+    public void CreateRandomKey()
+    {
+        var clientKey = CommonUtils.CreateRandomKey();
+        Console.WriteLine("Address: {0}", clientKey.Address);
+        Console.WriteLine("PrivateKey: {0}", clientKey.PrivateKey);
+    }
 }

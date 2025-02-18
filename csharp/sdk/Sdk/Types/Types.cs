@@ -432,3 +432,8 @@ public class ShopRefundableData(BigInteger refundableAmount, BigInteger refundab
         }
     }
 }
+public class ClientKey(string address, string privateKey)
+{
+    public string Address = address;
+    public string PrivateKey = privateKey;
+}

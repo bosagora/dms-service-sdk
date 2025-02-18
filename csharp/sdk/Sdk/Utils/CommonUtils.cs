@@ -4,6 +4,7 @@ using Nethereum.ABI;
 using Nethereum.Signer;
 using Org.BouncyCastle.Crypto.Digests;
 using Nethereum.Hex.HexConvertors.Extensions;
+using Acc.Service.Sdk.Types;
 
 namespace Acc.Service.Sdk.Utils;
 
@@ -385,5 +386,11 @@ public static class CommonUtils
                   Convert.ToString(Rand.Next() % 100000000).PadLeft(8, '0');
         _purchaseId++;
         return res;
+    }
+
+    public static ClientKey CreateRandomKey()
+    {
+        var key = EthECKey.GenerateKey();
+        return new ClientKey(key.GetPublicAddress(), key.GetPrivateKey());
     }
 }

@@ -10,14 +10,14 @@ import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint256;
-import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.Hash;
-import org.web3j.crypto.Sign;
+import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.acc.service.sdk.data.ClientKey;
 
 public class CommonUtils {
     @NotNull
@@ -358,5 +358,11 @@ public class CommonUtils {
         String res = String.format("P%s%s", CommonUtils.padLeftZeros(String.valueOf(purchaseId), 10), CommonUtils.padLeftZeros(String.valueOf(randomIdx), 4));
         purchaseId++;
         return res;
+    }
+
+    public static ClientKey createRandomKey() throws Exception {
+        ECKeyPair keyPair = Keys.createEcKeyPair();
+        Credentials credentials = Credentials.create(keyPair);
+        return new ClientKey(credentials.getAddress(), "0x"+keyPair.getPrivateKey().toString(16));
     }
 }

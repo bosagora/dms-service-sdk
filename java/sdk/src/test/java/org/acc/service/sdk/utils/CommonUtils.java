@@ -1,5 +1,6 @@
 package org.acc.service.sdk.utils;
 
+import org.acc.service.sdk.data.ClientKey;
 import org.junit.jupiter.api.Test;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.utils.Numeric;
@@ -44,6 +45,16 @@ class CommonUtilsTest {
             String message = CommonUtils.getPhoneHash("+82 10-9000-5000");
 
             assertEquals(message, "0x8f01f960fa3bacb03c4217e254a031bd005b1685002a1826141a90f1692ca2c4");
+        } catch (Exception e) {
+            assertEquals("some exception message...", e.getMessage());
+        }
+    }
+    @Test
+    void CreateRandomKey() {
+        try {
+            ClientKey clientKey = CommonUtils.createRandomKey();
+            System.out.printf("ClientKey.address: %s\n", clientKey.address);
+            System.out.printf("ClientKey.privateKey: %s\n", clientKey.privateKey);
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
         }

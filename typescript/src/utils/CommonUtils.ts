@@ -1,14 +1,12 @@
-// tslint:disable-next-line:no-implicit-dependencies
+import { IClientKey } from "../types";
+
 import { defaultAbiCoder } from "@ethersproject/abi";
-// tslint:disable-next-line:no-implicit-dependencies
 import { Signer } from "@ethersproject/abstract-signer";
-// tslint:disable-next-line:no-implicit-dependencies
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-// tslint:disable-next-line:no-implicit-dependencies
 import { arrayify, BytesLike } from "@ethersproject/bytes";
 import { HashZero } from "@ethersproject/constants";
-// tslint:disable-next-line:no-implicit-dependencies
 import { keccak256 } from "@ethersproject/keccak256";
+import { Wallet } from "@ethersproject/wallet";
 
 import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 
@@ -238,6 +236,14 @@ export class CommonUtils {
             [chainId, tokenAddress, from, to, amount, nonce, expiry]
         );
         return arrayify(keccak256(encodedResult));
+    }
+
+    public static createRandomKey(): IClientKey {
+        const wallet = Wallet.createRandom();
+        return {
+            address: wallet.address,
+            privateKey: wallet.privateKey,
+        };
     }
 }
 
