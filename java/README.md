@@ -11,6 +11,7 @@ See) https://gradle.org/install
 ### 1.2) Publish to MavenLocal
 
 ```shell
+cd sdk
 ./gradlew clean publishToMavenLocal
 ```
 You can verify that the library is distributed in the storage `~/.m2/repository`.
