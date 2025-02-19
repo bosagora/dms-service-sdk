@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Acc.Service.Sdk.Utils;
+namespace Kios.Service.Sdk.Utils;
 
 /// <summary>
 ///     The class that defines the Amount

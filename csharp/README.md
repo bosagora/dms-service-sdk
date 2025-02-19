@@ -1,8 +1,8 @@
-# acc-service-sdk for C#
+# kios-service-sdk for C#
 
 ## 1) Installation
 
-See nuget package) https://www.nuget.org/packages/acc-service-sdk
+See nuget package) https://www.nuget.org/packages/kios-service-sdk
 
 ## 2) Features
 
@@ -18,8 +18,8 @@ This SDK can be used in the following places.
 
 ## 3) How to save purchase data
 
-See [API Docs - https://save.test.acccoin.io/docs/](https://save.test.acccoin.io/docs/)
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/csharp/sample/Sample/SavePurchaseClientSample.cs
+See [API Docs - https://save.test.w/docs/](https://save.test.kioscoin.io/docs/)
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/csharp/sample/Sample/SavePurchaseClientSample.cs
 
 This is a function used by partners that support the payment system.  
 The test net of the loyalty system is ready.  
@@ -71,8 +71,8 @@ await client.SaveCancelPurchase(purchaseId, timestamp, 3600);
 
 ## 4) How to use loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Payment)  
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/csharp/sample/Sample/PaymentClientSample.cs
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Payment)  
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/csharp/sample/Sample/PaymentClientSample.cs
 
 This is a necessary function to build a point payment system.  
 Please create a wallet to be used for payment, and forward the address of the wallet to the operations team of the
@@ -173,8 +173,8 @@ collector.Stop();
 
 ## 5) How to provide loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Loyalty%20Point%20Provider)  
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/csharp/sample/Sample/ProviderClientSample.cs
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Loyalty%20Point%20Provider)  
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/csharp/sample/Sample/ProviderClientSample.cs
 
 This is the functionality you need to provide points.  
 You first need to deposit more than 100,000 tokens through the app.  
@@ -238,8 +238,8 @@ await agentClient.ProvideToAddress(prviderAddress, phoneNumber, amount);
 
 ## 6) How to settlement of shops
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Shop)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/csharp/test/Test/SettlementClientUsingAgent.cs
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Shop)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/csharp/test/Test/SettlementClientUsingAgent.cs
 
 The shop that acts as an agent for the settlement of shops is the settlement-shop.  
 This SDK provides the features you need for this settlement-shop.  

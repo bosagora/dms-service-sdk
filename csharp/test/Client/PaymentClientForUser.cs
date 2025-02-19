@@ -8,7 +8,7 @@ using Nethereum.Signer;
 using Org.BouncyCastle.Crypto.Digests;
 using Nethereum.Hex.HexConvertors.Extensions;
 
-namespace Acc.Service.Sdk.Client;
+namespace Kios.Service.Sdk.Client;
 
 using Utils;
 using Types;

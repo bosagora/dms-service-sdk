@@ -1,4 +1,4 @@
-namespace Acc.Service.Sdk.Sample;
+namespace Kios.Service.Sdk.Sample;
 
 using Client;
 using Types;

@@ -1,4 +1,4 @@
-namespace Acc.Service.Sdk.Test;
+namespace Kios.Service.Sdk.Test;
 
 using System.Numerics;
 using Utils;

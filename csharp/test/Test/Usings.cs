@@ -1,2 +1,2 @@
 global using NUnit.Framework;
-global using Acc.Service.Sdk;
+global using Kios.Service.Sdk;

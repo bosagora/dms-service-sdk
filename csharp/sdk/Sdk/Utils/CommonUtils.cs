@@ -4,9 +4,9 @@ using Nethereum.ABI;
 using Nethereum.Signer;
 using Org.BouncyCastle.Crypto.Digests;
 using Nethereum.Hex.HexConvertors.Extensions;
-using Acc.Service.Sdk.Types;
+using Kios.Service.Sdk.Types;
 
-namespace Acc.Service.Sdk.Utils;
+namespace Kios.Service.Sdk.Utils;
 
 public static class CommonUtils
 {

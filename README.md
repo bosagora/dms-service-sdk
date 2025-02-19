@@ -1,4 +1,4 @@
-# acc-service-sdk
+# kios-service-sdk
 
 ## 1. Features available
 A standard development kit provided for interworking with a decentralized loyalty point system.

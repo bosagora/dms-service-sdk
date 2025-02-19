@@ -5,7 +5,7 @@ using Nethereum.Signer;
 using System.Numerics;
 using Nethereum.Util;
 
-namespace Acc.Service.Sdk.Client;
+namespace Kios.Service.Sdk.Client;
 
 using Utils;
 using Types;

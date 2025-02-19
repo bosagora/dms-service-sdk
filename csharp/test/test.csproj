@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>Acc.Service.Sdk</RootNamespace>
+        <RootNamespace>Kios.Service.Sdk</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <AssemblyName>dms_service_sdk_test</AssemblyName>
+        <AssemblyName>kios_service_sdk_test</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

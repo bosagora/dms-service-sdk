@@ -1,7 +1,7 @@
 using System.Numerics;
 using Newtonsoft.Json.Linq;
 
-namespace Acc.Service.Sdk.Types;
+namespace Kios.Service.Sdk.Types;
 
 public enum NetWorkType
 {

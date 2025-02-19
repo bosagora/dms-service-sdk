@@ -1,4 +1,4 @@
-# acc-service-sdk for JAVA
+# kios-service-sdk for JAVA
 
 ---
 
@@ -11,7 +11,8 @@ See) https://gradle.org/install
 ### 1.2) Publish to MavenLocal
 
 ```shell
-cd sdk
+git clone https://github.com/kios-coin/kios-service-sdk.git
+cd kios-service-sdk/java/sdk
 ./gradlew clean publishToMavenLocal
 ```
 You can verify that the library is distributed in the storage `~/.m2/repository`.
@@ -29,7 +30,7 @@ dependencies {
     implementation "org.json:json:20231013"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
     implementation "org.web3j:core:4.12.1"
-    implementation 'org.acc.service.sdk:core:1.0.0-SNAPSHOT'
+    implementation 'org.kios.service.sdk:core:1.0.0-SNAPSHOT'
 }
 ```
 
@@ -48,8 +49,8 @@ This SDK can be used in the following places.
 
 ## 3) How to save purchase data
 
-See [API Docs - https://save.test.acccoin.io/docs/](https://save.test.acccoin.io/docs/)  
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/java/sample/src/main/java/org/example/Main.java
+See [API Docs - https://save.test.kioscoin.io/docs/](https://save.test.kioscoin.io/docs/)  
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/java/sample/src/main/java/org/example/Main.java
 
 
 This is a function used by partners that support the payment system.  
@@ -101,8 +102,8 @@ ResponseSavePurchase res3 = savePurchaseClient.saveCancelPurchase(purchaseId, ti
 
 ## 4) How to use loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Payment)  
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/java/sample/src/main/java/org/example/Main.java
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Payment)  
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/java/sample/src/main/java/org/example/Main.java
 
 This is a necessary function to build a point payment system.  
 Please create a wallet to be used for payment, and forward the address of the wallet to the operations team of the loyalty system.  
@@ -192,8 +193,8 @@ collector.Stop();
 
 ## 5) How to provide loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Loyalty%20Point%20Provider)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/java/sdk/src/test/java/org/acc/service/sdk/client/ProviderClient.java
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Loyalty%20Point%20Provider)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/java/sdk/src/test/java/org/acc/service/sdk/client/ProviderClient.java
 
 This is the functionality you need to provide points.  
 You first need to deposit more than 100,000 tokens through the app.  
@@ -256,8 +257,8 @@ String txHash = agentClient.ProvideToPhone(providerAddress, phoneNumber, amount)
 
 ## 6) How to settlement of shops
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Shop)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/java/org/acc/service/sdk/client/SettlementClientUsingAgentTest.java  
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Shop)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/java/org/acc/service/sdk/client/SettlementClientUsingAgentTest.java  
 
 The shop that acts as an agent for the settlement of shops is the settlement-shop.  
 This SDK provides the features you need for this settlement-shop.  

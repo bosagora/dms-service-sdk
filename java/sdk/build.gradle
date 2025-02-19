@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'org.acc.service.sdk'
+group = 'org.kios.service.sdk'
 version = '1.0.0-SNAPSHOT'
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'org.acc.service.sdk' // groupId
+            groupId = 'org.kios.service.sdk' // groupId
             artifactId = 'core'           // artifactId
             version = '1.0.0-SNAPSHOT'       // version
             from components.java

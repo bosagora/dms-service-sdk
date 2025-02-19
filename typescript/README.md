@@ -1,11 +1,11 @@
-# acc-service-sdk for Typescript
+# kios-service-sdk for Typescript
 
 ## 1) Installation
 
-Use [yarn](https://yarnpkg.com/) to install acc-service-sdk.
+Use [yarn](https://yarnpkg.com/) to install kios-service-sdk.
 
 ```bash
-yarn add acc-service-sdk
+yarn add kios-service-sdk
 ```
 
 ---
@@ -23,8 +23,8 @@ This SDK can be used in the following places.
 
 ## 3) How to save purchase data
 
-See [API Docs - https://save.test.acccoin.io/docs/](https://save.test.acccoin.io/docs/)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/typescript/tests/SavePurchaseClient.test.ts
+See [API Docs - https://save.test.kioscoin.io/docs/](https://save.test.kioscoin.io/docs/)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/typescript/tests/SavePurchaseClient.test.ts
 
 This is a function used by partners that support the payment system.  
 The test net of the loyalty system is ready.  
@@ -81,8 +81,8 @@ await savePurchaseClient.saveCancelPurchase(purchaseId, timestamp, 60n);
 
 ## 4) How to use loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Payment)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/typescript/tests/PaymentClient.test.ts
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Payment)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/typescript/tests/PaymentClient.test.ts
 
 This is a necessary function to build a point payment system.  
 Please create a wallet to be used for payment, and forward the address of the wallet to the operations team of the loyalty system.  
@@ -172,8 +172,8 @@ await eventCollector.stop();
 
 ## 5) How to provide loyalty points
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Loyalty%20Point%20Provider)  
-See Test Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/typescript/tests/ProviderClient.test.ts
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Loyalty%20Point%20Provider)  
+See Test Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/typescript/tests/ProviderClient.test.ts
 
 This is the functionality you need to provide points.  
 You first need to deposit more than 100,000 tokens through the app.  
@@ -240,8 +240,8 @@ await agentClient.provideToPhone(prviderAddress, phoneNumber, amount);
 
 ## 6) How to settlement of shops
 
-See [API Docs - https://relay.test.acccoin.io/docs/](https://relay.test.acccoin.io/docs/#/Shop)  
-See Sample Code https://github.com/acc-coin/acc-service-sdk/blob/v0.x.x/typescript/tests/SettlementClient.test.ts
+See [API Docs - https://relay.test.kioscoin.io/docs/](https://relay.test.kioscoin.io/docs/#/Shop)  
+See Sample Code https://github.com/kios-coin/kios-service-sdk/blob/v0.x.x/typescript/tests/SettlementClient.test.ts
 
 The shop that acts as an agent for the settlement of shops is the settlement-shop.  
 This SDK provides the features you need for this settlement-shop.  

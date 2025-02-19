@@ -1,6 +1,6 @@
 using Nethereum.Signer;
 
-namespace Acc.Service.Sdk.Types;
+namespace Kios.Service.Sdk.Types;
 
 public class ShopData(string shopId, string privateKey)
 {

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using Nethereum.Signer;
 using System.Numerics;
 
-namespace Acc.Service.Sdk.Client;
+namespace Kios.Service.Sdk.Client;
 
 using Utils;
 using Types;

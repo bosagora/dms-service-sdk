@@ -1,9 +1,9 @@
 package org.example;
 
-import org.acc.service.sdk.client.PaymentClient;
-import org.acc.service.sdk.data.NetWorkType;
-import org.acc.service.sdk.data.payment.PaymentTaskItemShort;
-import org.acc.service.sdk.utils.CommonUtils;
+import org.kios.service.sdk.client.PaymentClient;
+import org.kios.service.sdk.data.NetWorkType;
+import org.kios.service.sdk.data.payment.PaymentTaskItemShort;
+import org.kios.service.sdk.utils.CommonUtils;
 import org.json.JSONObject;
 import org.web3j.abi.TypeEncoder;
 import org.web3j.abi.datatypes.Address;

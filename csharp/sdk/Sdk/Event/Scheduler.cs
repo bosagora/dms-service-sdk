@@ -1,4 +1,4 @@
-namespace Acc.Service.Sdk.Event;
+namespace Kios.Service.Sdk.Event;
 
 public enum ScheduleState
 {

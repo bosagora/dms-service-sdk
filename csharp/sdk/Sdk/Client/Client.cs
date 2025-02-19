@@ -1,8 +1,8 @@
 using System.Numerics;
-using Acc.Service.Sdk.Utils;
+using Kios.Service.Sdk.Utils;
 using Newtonsoft.Json.Linq;
 
-namespace Acc.Service.Sdk.Client;
+namespace Kios.Service.Sdk.Client;
 
 using Types;
 

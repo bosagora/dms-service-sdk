@@ -5,7 +5,7 @@ using Nethereum.Signer;
 using Nethereum.ABI;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace Acc.Service.Sdk.Client;
+namespace Kios.Service.Sdk.Client;
 
 using Utils;
 using Types;

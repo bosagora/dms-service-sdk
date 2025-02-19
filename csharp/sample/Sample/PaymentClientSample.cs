@@ -1,9 +1,9 @@
-﻿using Acc.Service.Sdk.Client;
-using Acc.Service.Sdk.Types;
-using Acc.Service.Sdk.Utils;
-using Acc.Service.Sdk.Event;
+﻿using Kios.Service.Sdk.Client;
+using Kios.Service.Sdk.Types;
+using Kios.Service.Sdk.Utils;
+using Kios.Service.Sdk.Event;
 
-namespace Acc.Service.Sdk.Sample;
+namespace Kios.Service.Sdk.Sample;
 
 public class PaymentClientSample
 {

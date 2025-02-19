@@ -1,10 +1,10 @@
 using Nethereum.Util;
 using System.Numerics;
-using Acc.Service.Sdk.Client;
-using Acc.Service.Sdk.Types;
-using Acc.Service.Sdk.Utils;
+using Kios.Service.Sdk.Client;
+using Kios.Service.Sdk.Types;
+using Kios.Service.Sdk.Utils;
 
-namespace Acc.Service.Sdk.Sample;
+namespace Kios.Service.Sdk.Sample;
 
 public class ProviderClientSample
 {

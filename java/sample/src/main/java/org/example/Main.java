@@ -1,19 +1,19 @@
 package org.example;
 
-import org.acc.service.sdk.client.Client;
-import org.acc.service.sdk.client.PaymentClient;
-import org.acc.service.sdk.client.SavePurchaseClient;
-import org.acc.service.sdk.data.NetWorkType;
-import org.acc.service.sdk.data.UserBalance;
-import org.acc.service.sdk.data.payment.PaymentInfo;
-import org.acc.service.sdk.data.payment.PaymentTaskItem;
-import org.acc.service.sdk.data.payment.ShopTaskItem;
-import org.acc.service.sdk.data.purchase.PurchaseDetail;
-import org.acc.service.sdk.data.purchase.ResponseSavePurchase;
-import org.acc.service.sdk.event.ITaskEventListener;
-import org.acc.service.sdk.event.TaskEventCollector;
-import org.acc.service.sdk.utils.Amount;
-import org.acc.service.sdk.utils.CommonUtils;
+import org.kios.service.sdk.client.Client;
+import org.kios.service.sdk.client.PaymentClient;
+import org.kios.service.sdk.client.SavePurchaseClient;
+import org.kios.service.sdk.data.NetWorkType;
+import org.kios.service.sdk.data.UserBalance;
+import org.kios.service.sdk.data.payment.PaymentInfo;
+import org.kios.service.sdk.data.payment.PaymentTaskItem;
+import org.kios.service.sdk.data.payment.ShopTaskItem;
+import org.kios.service.sdk.data.purchase.PurchaseDetail;
+import org.kios.service.sdk.data.purchase.ResponseSavePurchase;
+import org.kios.service.sdk.event.ITaskEventListener;
+import org.kios.service.sdk.event.TaskEventCollector;
+import org.kios.service.sdk.utils.Amount;
+import org.kios.service.sdk.utils.CommonUtils;
 
 import java.math.BigInteger;
 

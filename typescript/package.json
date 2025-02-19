@@ -1,7 +1,7 @@
 {
-    "name": "acc-service-sdk",
+    "name": "kios-service-sdk",
     "version": "1.1.7",
-    "description": "The TypeScript SDK Library for ACC Partners",
+    "description": "The TypeScript SDK Library for KIOS Partners",
     "main": "dist/src/index.js",
     "types": "dist/src/index.d.ts",
     "scripts": {
@@ -20,7 +20,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/acc-coin/acc-service-sdk.git"
+        "url": "git+https://github.com/kios-coin/kios-service-sdk.git"
     },
     "keywords": [
         "SDK",
@@ -29,9 +29,9 @@
     "author": "BOSagora Foundation",
     "license": "AGPL-3.0-or-later",
     "bugs": {
-        "url": "https://github.com/acc-coin/acc-service-sdk/issues"
+        "url": "https://github.com/kios-coin/kios-service-sdk/issues"
     },
-    "homepage": "https://github.com/acc-coin/acc-service-sdk/",
+    "homepage": "https://github.com/kios-coin/kios-service-sdk/",
     "dependencies": {
         "@ethersproject/abi": "^5.7.0",
         "@ethersproject/abstract-signer": "^5.7.0",
