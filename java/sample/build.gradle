@@ -13,7 +13,7 @@ repositories {
 dependencies {
     implementation "org.json:json:20231013"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
-    implementation "org.web3j:core:4.12.1"
+    implementation "org.web3j:core:4.9.8"
     implementation 'org.kios.service.sdk:core:1.0.0-SNAPSHOT'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')

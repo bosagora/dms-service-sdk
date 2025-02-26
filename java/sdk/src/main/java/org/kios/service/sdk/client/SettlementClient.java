@@ -1,6 +1,8 @@
 package org.kios.service.sdk.client;
 
+import org.json.JSONArray;
 import org.kios.service.sdk.data.NetWorkType;
+import org.kios.service.sdk.data.settlement.ChainInfo;
 import org.kios.service.sdk.data.settlement.ShopData;
 import org.kios.service.sdk.data.settlement.ShopRefundableData;
 import org.kios.service.sdk.utils.CommonUtils;
@@ -49,9 +51,9 @@ public class SettlementClient extends Client {
         URI uri = new URI(relayEndpoint + "/v1/shop/settlement/client/list/" + getShopId() + "?startIndex=" + startIndex + "&endIndex=" + endIndex);
         HttpURLConnection conn = getHttpURLConnection(uri, "GET");
         JSONObject data = getJSONObjectResponse(conn);
-        var clients = data.getJSONArray("clients");
-        var clientList = new ArrayList<String>();
-        for (var i = 0; i < clients.length(); i++) {
+        JSONArray clients = data.getJSONArray("clients");
+        ArrayList<String> clientList = new ArrayList<String>();
+        for (int i = 0; i < clients.length(); i++) {
             clientList.add(clients.getString(i));
         }
         return clientList;
@@ -103,7 +105,7 @@ public class SettlementClient extends Client {
     }
 
     public String refund(BigInteger amount) throws Exception {
-        var adjustedAmount = CommonUtils.zeroGWEI(amount);
+        BigInteger adjustedAmount = CommonUtils.zeroGWEI(amount);
         long nonce = this.getShopNonceOf(this.credentials.getAddress());
         long chainId = this.getChainId();
         byte[] message = CommonUtils.getShopRefundMessage(getShopId(), adjustedAmount, nonce, chainId);
@@ -127,9 +129,9 @@ public class SettlementClient extends Client {
     }
 
     public String withdraw(BigInteger amount) throws Exception {
-        var chainInfo = getChainInfoOfSideChain();
-        var adjustedAmount = CommonUtils.zeroGWEI(amount);
-        var expiry = CommonUtils.getTimeStamp() + 1800;
+        ChainInfo chainInfo = getChainInfoOfSideChain();
+        BigInteger adjustedAmount = CommonUtils.zeroGWEI(amount);
+        long expiry = CommonUtils.getTimeStamp() + 1800;
         long nonce = this.getLedgerNonceOf(getAddress());
         byte[] message = CommonUtils.getTransferMessage(
                 chainInfo.network.chainId,

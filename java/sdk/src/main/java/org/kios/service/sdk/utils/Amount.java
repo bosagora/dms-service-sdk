@@ -32,14 +32,23 @@ public class Amount {
     public static Amount make(String value, int decimals) {
         if (value.isEmpty()) return new Amount(BigInteger.valueOf(0), decimals);
         value = value.replace(",", "").replace("_", "");
-        String Zero = "0".repeat(Math.max(0, decimals));
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < Math.max(0, decimals); i++){
+            sb.append("0");
+        }
+        String Zero = sb.toString();
         String [] numbers = value.split("\\.");
         if (numbers.length == 1) return new Amount(new BigInteger(numbers[0] + Zero, 10));
         String strDecimals = numbers[1];
         if (strDecimals.length() > decimals) strDecimals = strDecimals.substring(0, decimals);
         else if (strDecimals.length() < decimals) {
             int n = decimals - strDecimals.length();
-            strDecimals = strDecimals + "0".repeat(Math.max(0, decimals - strDecimals.length()));
+
+            StringBuilder sb2 = new StringBuilder();
+            for(int i = 0; i < Math.max(0, decimals - strDecimals.length()); i++){
+                sb2.append("0");
+            }
+            strDecimals = strDecimals + sb2.toString();
         }
         BigInteger n1 = new BigInteger(numbers[0] + Zero, 10);
         BigInteger n2 = new BigInteger(strDecimals, 10);
@@ -64,7 +73,11 @@ public class Amount {
         String integral_string = integral.toString();
         String decimals_string = decimal.toString();
         if (decimals_string.length() < this._decimals) {
-            decimals_string = "0".repeat(Math.max(0, this._decimals - decimals_string.length())) + decimals_string;
+            StringBuilder sb3 = new StringBuilder();
+            for(int i = 0; i < Math.max(0, this._decimals - decimals_string.length()); i++){
+                sb3.append("0");
+            }
+            decimals_string = sb3.toString() + decimals_string;
         }
         return integral_string + "." + decimals_string;
     }
