@@ -5,8 +5,11 @@ import org.acc.service.sdk.data.ShopData;
 import org.acc.service.sdk.data.UserBalance;
 import org.acc.service.sdk.data.UserData;
 import org.acc.service.sdk.data.payment.PaymentTaskItem;
+import org.acc.service.sdk.data.payment.PaymentTaskItemShort;
 import org.acc.service.sdk.data.purchase.PurchaseDetail;
 import org.acc.service.sdk.data.purchase.ResponseSavePurchase;
+import org.acc.service.sdk.data.settlement.ChainInfo;
+import org.acc.service.sdk.data.settlement.ShopRefundableData;
 import org.acc.service.sdk.utils.Amount;
 import org.acc.service.sdk.utils.CommonUtils;
 import org.junit.jupiter.api.Assertions;
@@ -74,7 +77,7 @@ class SettlementClientUsingAgentTest {
         users.add(new UserData("+82 10-1000-2004", "0xb93f43bdafc9efee5b223735a0dd4efef9522f2db5b9f70889d6fa6fcead50c4"));
 
         purchaseShopId = shops.get(5).shopId;
-        userAccount = users.getFirst().address;
+        userAccount = users.get(0).address;
 
         SavePurchase();
         Payment();
@@ -128,7 +131,7 @@ class SettlementClientUsingAgentTest {
         try {
             // Create User Client
             System.out.println("[ Create User Client ]");
-            PaymentClientForUser userClient = new PaymentClientForUser(network, users.getFirst().privateKey);
+            PaymentClientForUser userClient = new PaymentClientForUser(network, users.get(0).privateKey);
 
             // Create Client
             System.out.println("[ Create Client ]");
@@ -164,7 +167,7 @@ class SettlementClientUsingAgentTest {
 
                 // Approval New Payment
                 System.out.println("[ Approval New Payment ]");
-                var res = userClient.approveNewPayment(
+                PaymentTaskItemShort res = userClient.approveNewPayment(
                         paymentItem.paymentId,
                         paymentItem.purchaseId,
                         paymentItem.amount,
@@ -180,10 +183,10 @@ class SettlementClientUsingAgentTest {
 
                 // Close New Payment
                 System.out.println("[ Close New Payment ]");
-                var res2 = client.closeNewPayment(paymentItem.paymentId, true);
+                PaymentTaskItem res2 = client.closeNewPayment(paymentItem.paymentId, true);
                 assertEquals(res2.paymentId, paymentItem.paymentId);
 
-                // Waiting...f
+                // Waiting...
                 System.out.println("[ Waiting... ]");
                 Thread.sleep(3000);
             }
@@ -228,7 +231,7 @@ class SettlementClientUsingAgentTest {
         System.out.println("[ Settlement02_RemoveManager ]");
         try {
             for (ShopData shop : shops) {
-                var shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
+                SettlementClientForShop shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
                 shopClient.removeSettlementManager();
             }
         } catch (Exception e) {
@@ -240,7 +243,7 @@ class SettlementClientUsingAgentTest {
         System.out.println("[ Settlement03_SetManager ]");
         try {
             for (ShopData shop : activeShops) {
-                var shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
+                SettlementClientForShop shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
                 shopClient.setSettlementManager(settlementClientForManager.getShopId());
             }
         } catch (Exception e) {
@@ -251,8 +254,8 @@ class SettlementClientUsingAgentTest {
     void Settlement04_Check() {
         System.out.println("[ Settlement04_Check ]");
         try {
-            var length = settlementClient.getSettlementClientLength();
-            Assertions.assertEquals(length, 6);
+            long length = settlementClient.getSettlementClientLength();
+            Assertions.assertEquals(6, length);
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
         }
@@ -261,8 +264,8 @@ class SettlementClientUsingAgentTest {
     void Settlement05_CollectSettlementAmount() {
         System.out.println("[ Settlement05_CollectSettlementAmount ]");
         try {
-            var clientLength = refundAgent.getSettlementClientLength();
-            var clientList = refundAgent.getSettlementClientList(0, clientLength);
+            long clientLength = refundAgent.getSettlementClientLength();
+            ArrayList<String> clientList = refundAgent.getSettlementClientList(0, clientLength);
             refundAgent.collectSettlementAmountMultiClient(clientList);
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
@@ -282,9 +285,9 @@ class SettlementClientUsingAgentTest {
         System.out.println("[ Settlement07_CheckRefund ]");
         try {
             for (ShopData shop : activeShops) {
-                var shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
-                var res = shopClient.getRefundable();
-                Assertions.assertEquals(res.refundableAmount, BigInteger.ZERO);
+                SettlementClientForShop shopClient = new SettlementClientForShop(network, shop.privateKey, shop.shopId);
+                ShopRefundableData res = shopClient.getRefundable();
+                Assertions.assertEquals(BigInteger.ZERO, res.refundableAmount);
             }
         } catch (Exception e) {
             assertEquals("some exception message...", e.getMessage());
@@ -294,16 +297,16 @@ class SettlementClientUsingAgentTest {
     void Settlement08_RefundOfManager() {
         System.out.println("[ Settlement08_RefundOfManager ]");
         try {
-            var refundableData = settlementClient.getRefundable();
-            var refundableAmount = refundableData.refundableAmount;
-            var refundableToken = refundableData.refundableToken;
+            ShopRefundableData refundableData = settlementClient.getRefundable();
+            BigInteger refundableAmount = refundableData.refundableAmount;
+            BigInteger refundableToken = refundableData.refundableToken;
 
-            var accountOfShop = settlementClient.getAccountOfShopOwner();
-            var res1 = settlementClient.getBalanceAccount(accountOfShop);
+            String accountOfShop = settlementClient.getAccountOfShopOwner();
+            UserBalance res1 = settlementClient.getBalanceAccount(accountOfShop);
 
             refundAgent.refund(refundableAmount);
 
-            var res2 = settlementClient.getBalanceAccount(accountOfShop);
+            UserBalance res2 = settlementClient.getBalanceAccount(accountOfShop);
 
             Assertions.assertEquals(res2.token.balance, res1.token.balance.add(refundableToken));
         } catch (Exception e) {
@@ -323,11 +326,11 @@ class SettlementClientUsingAgentTest {
     void Settlement10_Withdrawal() {
         System.out.println("[ Settlement10_Withdrawal ]");
         try {
-            var chainInfo = settlementClient.getChainInfoOfSideChain();
-            var accountOfShop = settlementClient.getAccountOfShopOwner();
-            var res2 = settlementClient.getBalanceAccount(accountOfShop);
-            var balanceOfToken = res2.token.balance;
-            var balanceMainChain1 = settlementClient.getBalanceOfMainChainToken(accountOfShop);
+            ChainInfo chainInfo = settlementClient.getChainInfoOfSideChain();
+            String accountOfShop = settlementClient.getAccountOfShopOwner();
+            UserBalance res2 = settlementClient.getBalanceAccount(accountOfShop);
+            BigInteger balanceOfToken = res2.token.balance;
+            BigInteger balanceMainChain1 = settlementClient.getBalanceOfMainChainToken(accountOfShop);
             withdrawalAgent.withdraw(balanceOfToken);
 
             long t1 = CommonUtils.getTimeStamp();
