@@ -1,0 +1,44 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'org.kios.service.sdk'
+version = '1.22.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation "org.json:json:20231013"
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.13.44"
+    implementation "org.web3j:core:4.12.1"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_22
+    targetCompatibility = JavaVersion.VERSION_22
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.kios.service.sdk'
+            artifactId = 'core'
+            version = '1.22.0-SNAPSHOT'
+            from components.java
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

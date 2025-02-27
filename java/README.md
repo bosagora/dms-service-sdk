@@ -12,7 +12,7 @@ See) https://gradle.org/install
 
 ```shell
 git clone https://github.com/kios-coin/kios-service-sdk.git
-cd kios-service-sdk/java/sdk
+cd kios-service-sdk/java/jdk22/sdk
 ./gradlew clean publishToMavenLocal
 ```
 You can verify that the library is distributed in the storage `~/.m2/repository`.
