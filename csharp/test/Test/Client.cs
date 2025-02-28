@@ -64,16 +64,16 @@ public class ClientTests
     [Test]
     public async Task Test06_GetPhoneHash()
     {
-        var message = await client.GetPhoneHash("+82 10-9000-5000");
-        Assert.That(message,
+        var info = await client.GetPhoneHash("+82 10-9000-5000");
+        Assert.That(info.PhoneHash,
             Is.EqualTo("0x8f01f960fa3bacb03c4217e254a031bd005b1685002a1826141a90f1692ca2c4"));
     }
 
     [Test]
     public async Task Test07_GetPhoneHash2()
     {
-        var message = await client.GetPhoneHash("");
-        Assert.That(message,
+        var info = await client.GetPhoneHash("");
+        Assert.That(info.PhoneHash,
             Is.EqualTo("0x32105b1d0b88ada155176b58ee08b45c31e4f2f7337475831982c313533b880c"));
     }
 }

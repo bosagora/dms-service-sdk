@@ -88,7 +88,7 @@ public class SaveNewPurchase(
     string currency,
     string shopId,
     string userAccount,
-    string userPhoneHash,
+    string userPhone,
     string sender,
     string purchaseSignature)
 {
@@ -98,7 +98,7 @@ public class SaveNewPurchase(
     public readonly string Currency = currency;
     public readonly string ShopId = shopId;
     public readonly string UserAccount = userAccount;
-    public readonly string UserPhoneHash = userPhoneHash;
+    public readonly string UserPhone = userPhone;
     public readonly string Sender = sender;
     public string PurchaseSignature = purchaseSignature;
 }
@@ -436,4 +436,11 @@ public class ClientKey(string address, string privateKey)
 {
     public string Address = address;
     public string PrivateKey = privateKey;
+}
+
+
+public class PhoneHashInfo(string phone, string phoneHash)
+{
+    public string Phone = phone;
+    public string PhoneHash = phoneHash;
 }

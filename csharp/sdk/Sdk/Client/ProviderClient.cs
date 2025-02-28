@@ -113,16 +113,16 @@ public class ProviderClient(NetWorkType network, string privateKey) : Client(net
      */
     public async Task<string> ProvideToPhone(string provider, string receiver, BigInteger amount)
     {
-        var phoneHash = await GetPhoneHash(receiver);
+        var phoneHashInfo = await GetPhoneHash(receiver);
         var message =
-            CommonUtils.GetProvidePointToPhoneMessage(provider, phoneHash, amount, await GetLedgerNonceOf(Address),
+            CommonUtils.GetProvidePointToPhoneMessage(provider, phoneHashInfo.PhoneHash, amount, await GetLedgerNonceOf(Address),
                 await GetChainId());
         var signature = CommonUtils.SignMessage(_keyPair, message);
 
         var body = new StringContent(new JObject
         {
             { "provider", provider },
-            { "receiver", phoneHash },
+            { "receiver", phoneHashInfo.PhoneHash },
             { "amount", amount.ToString() },
             { "signature", signature }
         }.ToString(), Encoding.UTF8, "application/json");

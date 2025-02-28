@@ -60,6 +60,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
         var adjustedUserAccount =
             userAccount.Trim().Equals(string.Empty) ? AddressUtil.ZERO_ADDRESS : userAccount.Trim();
 
+        var phoneHashInfo = await GetPhoneHash(userPhone);
         var adjustedPurchase = new SaveNewPurchase(
             purchaseId,
             Amount.Make(cacheAmount).Value,
@@ -67,7 +68,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             currency,
             shopId,
             adjustedUserAccount,
-            await GetPhoneHash(userPhone),
+            phoneHashInfo.Phone,
             assetAddress,
             ""
         );
@@ -85,7 +86,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             adjustedPurchase.Currency,
             adjustedPurchase.ShopId,
             adjustedPurchase.UserAccount,
-            adjustedPurchase.UserPhoneHash,
+            phoneHashInfo.PhoneHash,
             adjustedPurchase.Sender,
             await GetChainId()
         );
@@ -99,7 +100,7 @@ public class SavePurchaseClient(NetWorkType network, string privateKey, string a
             { "currency", adjustedPurchase.Currency },
             { "shopId", adjustedPurchase.ShopId },
             { "userAccount", adjustedPurchase.UserAccount },
-            { "userPhoneHash", adjustedPurchase.UserPhoneHash },
+            { "userPhone", adjustedPurchase.UserPhone },
             { "sender", adjustedPurchase.Sender },
             { "purchaseSignature", adjustedPurchase.PurchaseSignature }
         };
