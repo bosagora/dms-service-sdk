@@ -7,6 +7,8 @@ namespace Kios.Service.Sdk.Sample;
 
 public class PaymentClientSample
 {
+    private NetWorkType network = NetWorkType.KIOS_TestNet;
+    private Dictionary<NetWorkType, string> AccessKeys;
     private readonly PaymentClient _paymentClient;
     private readonly PaymentClientForUser _userClient;
     private readonly PaymentClientForShop _shopClient;
@@ -17,16 +19,24 @@ public class PaymentClientSample
 
     public PaymentClientSample()
     {
-        var privateKeyForPayment = "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276";
-        _paymentClient = new PaymentClient(NetWorkType.ACC_TestNet, privateKeyForPayment);
+        AccessKeys = new Dictionary<NetWorkType, string>();
+        AccessKeys.Add(NetWorkType.ACC_TestNet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
+        AccessKeys.Add(NetWorkType.ACC_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        AccessKeys.Add(NetWorkType.KIOS_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        AccessKeys.Add(NetWorkType.LocalHost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342");
+
+        _paymentClient = new PaymentClient(network, AccessKeys[network]);
+
         var listener = new TestEventListener();
         _collector = new TaskEventCollector(_paymentClient, listener);
         _collector.Start();
-        _userClient = new PaymentClientForUser(NetWorkType.ACC_TestNet,
+
+        _userClient = new PaymentClientForUser(network,
             "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
-        _shopClient = new PaymentClientForShop(NetWorkType.ACC_TestNet,
+        _shopClient = new PaymentClientForShop(network,
             "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a",
-            "0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874");
+            "0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874");
     }
 
     private async Task Test01_Waiting()

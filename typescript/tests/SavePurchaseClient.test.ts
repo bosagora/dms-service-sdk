@@ -30,7 +30,7 @@ function getPurchaseId(): string {
 
 describe("Test of ProviderClient", function () {
     this.timeout(1000 * 60 * 5);
-    const network: NetWorkType = NetWorkType.acc_testnet;
+    const network: NetWorkType = NetWorkType.kios_testnet;
     const AccessKeys: Map<number, string> = new Map([
         [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
         [NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276"],
@@ -70,7 +70,7 @@ describe("Test of ProviderClient", function () {
             0n,
             10_000,
             10_000,
-            "php",
+            "krw",
             shopId,
             userAccount,
             userPhone,
@@ -107,7 +107,7 @@ describe("Test of ProviderClient", function () {
             60n,
             10_000,
             10_000,
-            "php",
+            "krw",
             shopId,
             userAccount,
             userPhone,

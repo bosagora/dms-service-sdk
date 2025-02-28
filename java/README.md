@@ -64,14 +64,14 @@ The system adds purchase information received from a trusted partner to the bloc
 ### 3.1) Create Client Module
 
 ```java
-String privateKeyOfCollector = "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276";
-String addressOfAsset = "0x85EeBb1289c0d0C17eFCbadB40AeF0a1c3b46714";
+String privateKeyOfCollector = "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee";
+String addressOfAsset = "0x153f2340807370855092D04E0e0abe4f2b634240";
 SavePurchaseClient savePurchaseClient = new SavePurchaseClient(
-    NetWorkType.testnet,
+    NetWorkType.kios_testnet,
     privateKeyOfCollector,
     addressOfAsset
 );
-String shopId = "0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874";
+String shopId = "0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874";
 String userAccount = "0x64D111eA9763c93a003cef491941A011B8df5a49";
 String userPhone = "";
 ```
@@ -85,7 +85,7 @@ ResponseSavePurchase res1 = savePurchaseClient.saveNewPurchase(
     0,
     "10000",
     "10000",
-    "php",
+    "krw",
     shopId,
     userAccount,
     "",
@@ -114,8 +114,8 @@ Please make the wallet of the main net yourself and deliver only its address to 
 
 ```java
 // This is the private key of the wallet to be used for payment.
-String privateKeyForPayment = "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276";
-PaymentClient client = new PaymentClient(NetWorkType.testnet, privateKeyForPayment);
+String privateKeyForPayment = "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee";
+PaymentClient client = new PaymentClient(NetWorkType.kios_testnet, privateKeyForPayment);
 ```
 
 ### 4.2) Implement Event Listener
@@ -207,7 +207,7 @@ And if you register the agent's address, you don't have to provide the private k
 If the agent is not used, the private key of the provider in which the asset is stored should be provided to the development team
 
 ```java
-ProviderClient providerClient = new ProviderClient(NetWorkType.testnet,
+ProviderClient providerClient = new ProviderClient(NetWorkType.kios_testnet,
     "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
 ```
 
@@ -234,7 +234,7 @@ With agent, you only need to provide the address of the provider to the developm
 
 ```java
 String providerAddress = "0x64D111eA9763c93a003cef491941A011B8df5a49";
-ProviderClient agentClient = new ProviderClient(NetWorkType.testnet, "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
+ProviderClient agentClient = new ProviderClient(NetWorkType.kios_testnet, "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
 ```
 
 ### 5.5) Provide to wallet address with agent

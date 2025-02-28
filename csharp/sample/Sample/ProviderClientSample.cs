@@ -8,14 +8,15 @@ namespace Kios.Service.Sdk.Sample;
 
 public class ProviderClientSample
 {
+    private NetWorkType network = NetWorkType.KIOS_TestNet;
     private ProviderClient providerClient;
     private ProviderClient agentClient;
 
     public ProviderClientSample()
     {
-        providerClient = new ProviderClient(NetWorkType.ACC_TestNet,
+        providerClient = new ProviderClient(network,
             "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
-        agentClient = new ProviderClient(NetWorkType.ACC_TestNet,
+        agentClient = new ProviderClient(network,
             "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab");
     }
 

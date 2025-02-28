@@ -9,7 +9,7 @@ using Utils;
 
 public class PaymentClientTest
 {
-    private NetWorkType network = NetWorkType.ACC_TestNet;
+    private NetWorkType network = NetWorkType.KIOS_TestNet;
     private Dictionary<NetWorkType, string> AccessKeys;
     private PaymentClient paymentClient;
     private PaymentClientForUser userClient;
@@ -23,9 +23,12 @@ public class PaymentClientTest
     public PaymentClientTest()
     {
         AccessKeys = new Dictionary<NetWorkType, string>();
-        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
         AccessKeys.Add(NetWorkType.ACC_TestNet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
+        AccessKeys.Add(NetWorkType.ACC_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        AccessKeys.Add(NetWorkType.KIOS_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
         AccessKeys.Add(NetWorkType.LocalHost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342");
+
         paymentClient = new PaymentClient(network, AccessKeys[network]);
         listener = new TestEventListener();
         collector = new TaskEventCollector(paymentClient, listener);
@@ -34,7 +37,7 @@ public class PaymentClientTest
             "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c");
         shopClient = new PaymentClientForShop(network,
             "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a",
-            "0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874");
+            "0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874");
     }
 
     [SetUp]

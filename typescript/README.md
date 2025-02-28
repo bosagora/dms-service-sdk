@@ -39,11 +39,11 @@ data, the system gives the buyer a percentage of the purchase amount as points.
 
 ```typescript
 // The private key of wallet
-const privateKeyOfCollector = "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276";
+const privateKeyOfCollector = "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee";
 // The address of wallet, This is the address where token assets are stored
-const addressOfAsset = "0x85EeBb1289c0d0C17eFCbadB40AeF0a1c3b46714";
+const addressOfAsset = "0x153f2340807370855092D04E0e0abe4f2b634240";
 // Create a client
-const savePurchaseClient = new SavePurchaseClient(NetWorkType.testnet, privateKeyOfCollector, addressOfAsset);
+const savePurchaseClient = new SavePurchaseClient(NetWorkType.kios_testnet, privateKeyOfCollector, addressOfAsset);
 ```
 
 ### 3.2) Save New Purchase Data
@@ -93,7 +93,7 @@ Please make the wallet of the main net yourself and deliver only its address to 
 
 ```typescript
 // This is the private key of the wallet to be used for payment.
-const privateKeyForPayment = "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276";
+const privateKeyForPayment = "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee";
 const paymentClient = new PaymentClient(NetWorkType.testnet, privateKeyForPayment);
 ```
 
@@ -255,7 +255,7 @@ Owners of settlement-shop can set up these two addresses.
 
 ```typescript
 var ownerPrivateKey = "0xd72fb7fe49fd18f92481cbee186050816631391b4a25d579b7cff7efdf7099d3";
-var managerShopId = "0x000108bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
+var managerShopId = "0x000308bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
 var settlementClientForManager = new SettlementClient(network, ownerPrivateKey, managerShopId);
 ```
 
@@ -265,7 +265,7 @@ This agent accumulates the settlement of all registered shops into the settlemen
 
 ```typescript
 var refundAgentPrivateKey = "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c";
-var managerShopId = "0x000108bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
+var managerShopId = "0x000308bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
 var refundAgent = new SettlementClient(network, refundAgentPrivateKey, managerShopId);
 ```
 
@@ -275,7 +275,7 @@ This agent is authorized to perform the function of withdrawing tokens to the ma
 
 ```typescript
 var withdrawalAgentPrivateKey = "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab";
-var managerShopId = "0x000108bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
+var managerShopId = "0x000308bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86";
 var withdrawalAgent = new SettlementClient(network, withdrawalAgentPrivateKey, managerShopId);
 ```
 

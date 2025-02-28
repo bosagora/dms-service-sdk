@@ -7,7 +7,7 @@ using System.Numerics;
 
 public class SavePurchaseClientTests
 {
-    private NetWorkType network = NetWorkType.ACC_TestNet;
+    private NetWorkType network = NetWorkType.KIOS_TestNet;
     private Dictionary<NetWorkType, string> AccessKeys;
     private Dictionary<NetWorkType, string> AssetAddresses;
     private SavePurchaseClient client;
@@ -24,20 +24,21 @@ public class SavePurchaseClientTests
     public SavePurchaseClientTests()
     {
         AccessKeys = new Dictionary<NetWorkType, string>();
-        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
         AccessKeys.Add(NetWorkType.ACC_TestNet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
+        AccessKeys.Add(NetWorkType.ACC_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        AccessKeys.Add(NetWorkType.KIOS_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
         AccessKeys.Add(NetWorkType.LocalHost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342");
 
         AssetAddresses = new Dictionary<NetWorkType, string>();
         AssetAddresses.Add(NetWorkType.ACC_TestNet, "0x85EeBb1289c0d0C17eFCbadB40AeF0a1c3b46714");
+        AssetAddresses.Add(NetWorkType.ACC_MainNet, "0xCB2e8ebBF4013164161d7F2297be25d4A9dC6b17");
+        AssetAddresses.Add(NetWorkType.KIOS_TestNet, "0x153f2340807370855092D04E0e0abe4f2b634240");
+        AssetAddresses.Add(NetWorkType.KIOS_MainNet, "0xf077c9CfFa387E35de72b68448ceD5382CbC5D7D");
         AssetAddresses.Add(NetWorkType.LocalHost, "0x4501F7aF010Cef3DcEaAfbc7Bfb2B39dE57df54d");
-
-        client = new SavePurchaseClient(
-            network,
-            AccessKeys[network],
-            AssetAddresses[network]
-        );
-        shopId = "0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874";
+        
+        client = new SavePurchaseClient(network, AccessKeys[network], AssetAddresses[network]);
+        shopId = "0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874";
         userAccount = "0x64D111eA9763c93a003cef491941A011B8df5a49";
         userPhone = "";
     }
@@ -63,7 +64,7 @@ public class SavePurchaseClientTests
             0,
             "10000",
             "10000",
-            "php",
+            "krw",
             shopId,
             userAccount,
             "",
@@ -113,7 +114,7 @@ public class SavePurchaseClientTests
             60,
             "10000",
             "10000",
-            "php",
+            "krw",
             shopId,
             userAccount,
             "",

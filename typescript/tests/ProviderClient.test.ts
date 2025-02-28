@@ -16,7 +16,7 @@ describe("Test of ProviderClient", function () {
     this.timeout(1000 * 60 * 5);
     let providerClient: ProviderClient;
     let agentClient: ProviderClient;
-    const network: NetWorkType = NetWorkType.acc_testnet;
+    const network: NetWorkType = NetWorkType.kios_testnet;
 
     const users: IUserData[] = JSON.parse(fs.readFileSync("./tests/data/users.json", "utf8"));
 

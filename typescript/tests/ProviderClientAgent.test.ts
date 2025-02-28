@@ -14,7 +14,7 @@ describe("Test of ProviderClient", function () {
     const users: IUserData[] = JSON.parse(fs.readFileSync("./tests/data/users.json", "utf8"));
     let agentClient: ProviderClient;
     const providerAddress = users[0].address;
-    const network: NetWorkType = NetWorkType.acc_testnet;
+    const network: NetWorkType = NetWorkType.kios_testnet;
 
     before(() => {
         agentClient = new ProviderClient(network, users[1].privateKey);
