@@ -197,12 +197,12 @@ public class Client
         return Convert.ToInt64(jObject.GetValue("nonce")!.ToString());
     }
 
-    public async Task<string> GetPhoneHash(string phone)
+    public async Task<PhoneHashInfo> GetPhoneHash(string phone)
     {
-        if (phone.Trim().Equals("")) return CommonUtils.GetPhoneHash("");
+        if (phone.Trim().Equals("")) return new PhoneHashInfo("", CommonUtils.GetPhoneHash(""));
         var response = await GetAsync($"{RelayEndpoint}/v1/phone/hash/{phone.Trim()}");
         var jObject = ParseResponseToJObject(response);
-        return jObject.GetValue("phoneHash")!.ToString();
+        return new PhoneHashInfo(jObject.GetValue("phone")!.ToString(), jObject.GetValue("phoneHash")!.ToString());
     }
 
 

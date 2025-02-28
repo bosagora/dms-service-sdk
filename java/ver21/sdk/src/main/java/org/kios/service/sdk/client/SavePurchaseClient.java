@@ -96,6 +96,7 @@ public class SavePurchaseClient extends Client {
             adjustedUserPhone = CommonUtils.getInternationalPhoneNumber(adjustedUserPhone);
         }
 
+        String userPhoneHash = CommonUtils.getPhoneHash(adjustedUserPhone);
         SaveNewPurchase adjustedPurchase = new SaveNewPurchase(
                 purchaseId,
                 Amount.make(cacheAmount).getValue(),
@@ -103,7 +104,7 @@ public class SavePurchaseClient extends Client {
                 currency,
                 shopId,
                 adjustedUserAccount,
-                CommonUtils.getPhoneHash(adjustedUserPhone),
+                adjustedUserPhone,
                 this.assetAddress,
                 ""
         );
@@ -124,7 +125,7 @@ public class SavePurchaseClient extends Client {
                 adjustedPurchase.currency,
                 adjustedPurchase.shopId,
                 adjustedPurchase.userAccount,
-                adjustedPurchase.userPhoneHash,
+                userPhoneHash,
                 adjustedPurchase.sender,
                 this.getChainId()
         );
@@ -142,7 +143,7 @@ public class SavePurchaseClient extends Client {
         purchaseObj.put("currency", adjustedPurchase.currency);
         purchaseObj.put("shopId", adjustedPurchase.shopId);
         purchaseObj.put("userAccount", adjustedPurchase.userAccount);
-        purchaseObj.put("userPhoneHash", adjustedPurchase.userPhoneHash);
+        purchaseObj.put("userPhone", adjustedPurchase.userPhone);
         purchaseObj.put("sender", adjustedPurchase.sender);
         purchaseObj.put("purchaseSignature", adjustedPurchase.purchaseSignature);
         body.put("purchase", purchaseObj);

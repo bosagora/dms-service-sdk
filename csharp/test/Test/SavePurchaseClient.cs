@@ -66,7 +66,7 @@ public class SavePurchaseClientTests
             shopId,
             userAccount,
             "",
-            new PurchaseDetail[] { new("2020051310000000", "10000", 10) }
+            [new("2020051310000000", "10000", 10)]
         );
         Console.WriteLine($"type: {res1.Type}, sequence: {res1.Sequence}, purchaseId: {res1.PurchaseId}");
     }

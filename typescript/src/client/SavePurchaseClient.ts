@@ -95,6 +95,7 @@ export class SavePurchaseClient extends Client {
             throw new Error(`This is not a phone number format ${adjustedUserPhone}`);
         }
 
+        const userPhoneHash = CommonUtils.getPhoneHash(adjustedUserPhone);
         const adjustedPurchase: ISavePurchase = {
             purchaseId,
             cashAmount: BOACoin.make(cacheAmount).value,
@@ -102,7 +103,7 @@ export class SavePurchaseClient extends Client {
             currency,
             shopId,
             userAccount: adjustedUserAccount,
-            userPhoneHash: CommonUtils.getPhoneHash(adjustedUserPhone),
+            userPhone: adjustedUserPhone,
             sender: this.assetAddress,
             purchaseSignature: "",
         };
@@ -134,7 +135,7 @@ export class SavePurchaseClient extends Client {
             adjustedPurchase.currency,
             adjustedPurchase.shopId,
             adjustedPurchase.userAccount,
-            adjustedPurchase.userPhoneHash,
+            userPhoneHash,
             adjustedPurchase.sender,
             await this.getChainId()
         );
@@ -215,7 +216,7 @@ interface ISavePurchase {
     currency: string;
     shopId: string;
     userAccount: string;
-    userPhoneHash: string;
+    userPhone: string;
     sender: string;
     purchaseSignature: string;
 }
