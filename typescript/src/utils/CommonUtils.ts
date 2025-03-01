@@ -1,4 +1,4 @@
-import { IClientKey } from "../types";
+import { IClientKey, NetWorkType } from "../types";
 
 import { defaultAbiCoder } from "@ethersproject/abi";
 import { Signer } from "@ethersproject/abstract-signer";
@@ -244,6 +244,44 @@ export class CommonUtils {
             address: wallet.address,
             privateKey: wallet.privateKey,
         };
+    }
+
+    public static getNetWorkType(shopId: string): NetWorkType {
+        if (shopId.length < 5) {
+            return NetWorkType.kios_mainnet;
+        }
+        const prefix = shopId.substring(0, 6);
+        switch (prefix) {
+            case "0x0001":
+                return NetWorkType.acc_testnet;
+            case "0x0002":
+                return NetWorkType.acc_mainnet;
+            case "0x0003":
+                return NetWorkType.kios_testnet;
+            default:
+                return NetWorkType.kios_mainnet;
+        }
+    }
+
+    public static getDefaultCurrencySymbol(netWorkType: NetWorkType): string {
+        if (netWorkType === NetWorkType.acc_testnet || netWorkType === NetWorkType.acc_mainnet) {
+            return "php";
+        } else {
+            return "krw";
+        }
+    }
+
+    public static getShopIdPrefix(netWorkType: NetWorkType): string {
+        switch (netWorkType) {
+            case NetWorkType.acc_testnet:
+                return "0x0001";
+            case NetWorkType.acc_mainnet:
+                return "0x0002";
+            case NetWorkType.kios_testnet:
+                return "0x0003";
+            default:
+                return "0x0004";
+        }
     }
 }
 

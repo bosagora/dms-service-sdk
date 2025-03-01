@@ -1,4 +1,4 @@
-import { AddressZero, HashZero } from "@ethersproject/constants";
+import { AddressZero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fs from "fs";
 import { BOACoin, CommonUtils, IPaymentTaskItem, NetWorkType, PaymentClient, SavePurchaseClient } from "../src";
@@ -7,38 +7,20 @@ import * as assert from "assert";
 
 import { BigNumber } from "@ethersproject/bignumber";
 import { SettlementClient } from "../src/client/SettlementClient";
+import { Helper } from "./helper/Helper";
 import { PaymentClientForShop } from "./helper/PaymentClientForShop";
 import { PaymentClientForUser } from "./helper/PaymentClientForUser";
 import { SettlementClientForShop } from "./helper/SettlementClientForShop";
-
-interface IShopData {
-    shopId: string;
-    name: string;
-    currency: string;
-    address: string;
-    privateKey: string;
-}
-
-interface IUserData {
-    phone: string;
-    address: string;
-    privateKey: string;
-}
-
-let _purchaseId = 0;
-function getPurchaseId(): string {
-    const randomIdx = Math.floor(Math.random() * 1000);
-    const res = "P" + _purchaseId.toString().padStart(10, "0") + randomIdx.toString().padStart(4, "0");
-    _purchaseId++;
-    return res;
-}
+import { IShopData, IUserData } from "./types";
 
 describe("Test of SettlementClient - Not using agent", function () {
     this.timeout(1000 * 60 * 5);
-    const network: NetWorkType = NetWorkType.acc_testnet;
-    const AccessKeys: Map<number, string> = new Map([
-        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+    const network: NetWorkType = NetWorkType.kios_testnet;
+    const KeysOfCollector: Map<number, string> = new Map([
         [NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276"],
+        [NetWorkType.acc_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"],
+        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+        [NetWorkType.kios_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"], // 비밀키 생성후 주소만 시스템에 등록해야함
         [NetWorkType.localhost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342"],
     ]);
     const AssetAddresses: Map<number, string> = new Map([
@@ -49,7 +31,11 @@ describe("Test of SettlementClient - Not using agent", function () {
 
     let savePurchaseClient: SavePurchaseClient;
     before(() => {
-        savePurchaseClient = new SavePurchaseClient(network, privateKeyOfCollector, addressOfAsset);
+        savePurchaseClient = new SavePurchaseClient(
+            network,
+            KeysOfCollector.get(network) || "",
+            AssetAddresses.get(network) || ""
+        );
     });
 
     it("Check Previous Point Balance...", async () => {
@@ -59,12 +45,12 @@ describe("Test of SettlementClient - Not using agent", function () {
 
     it("Save New Purchase 1", async () => {
         await savePurchaseClient.saveNewPurchase(
-            getPurchaseId(),
+            Helper.getPurchaseId(),
             CommonUtils.getTimeStampBigInt(),
             0n,
             100_000_000,
             100_000_000,
-            "php",
+            CommonUtils.getDefaultCurrencySymbol(network),
             purchaseShopId,
             userAccount,
             "",
@@ -94,8 +80,6 @@ describe("Test of SettlementClient - Not using agent", function () {
 
     let settlementClientForManager: SettlementClientForShop;
     let settlementClient: SettlementClient;
-    const privateKeyOfCollector = AccessKeys.get(network) || "";
-    const addressOfAsset = AssetAddresses.get(network) || "";
     const shops: IShopData[] = JSON.parse(fs.readFileSync("./tests/data/shops.json", "utf8"));
     const users: IUserData[] = JSON.parse(fs.readFileSync("./tests/data/users.json", "utf8"));
     const settlementClientForShop = shops.map((m) => new SettlementClientForShop(network, m.privateKey, m.shopId));
@@ -147,7 +131,7 @@ describe("Test of SettlementClient - Not using agent", function () {
     const terminalID: string = "POS001";
 
     before("Create Client for Payment", async () => {
-        const privateKeyForPayment = AccessKeys.get(network) || "";
+        const privateKeyForPayment = KeysOfCollector.get(network) || "";
         paymentClient = new PaymentClient(network, privateKeyForPayment);
         userClient = new PaymentClientForUser(network, users[0].privateKey);
     });
@@ -164,12 +148,12 @@ describe("Test of SettlementClient - Not using agent", function () {
             console.log(`[1. End - Temporary Account] temporaryAccount: ${temporaryAccount}`);
 
             console.log(`[2. Begin - Open New Payment] paymentId`);
-            const purchaseId = getPurchaseId();
+            const purchaseId = Helper.getPurchaseId();
             paymentItem = await paymentClient.openNewPayment(
                 purchaseId,
                 temporaryAccount,
                 BOACoin.make(100_000).value,
-                "php",
+                CommonUtils.getDefaultCurrencySymbol(network),
                 shopClient.getShopId(),
                 terminalID
             );
@@ -267,9 +251,11 @@ describe("Test of SettlementClient - Not using agent", function () {
 describe("Test of SettlementClient - Using agent", function () {
     this.timeout(1000 * 60 * 5);
     const network: NetWorkType = NetWorkType.kios_testnet;
-    const AccessKeys: Map<number, string> = new Map([
-        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+    const KeysOfCollector: Map<number, string> = new Map([
         [NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276"],
+        [NetWorkType.acc_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"],
+        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+        [NetWorkType.kios_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"], // 비밀키 생성후 주소만 시스템에 등록해야함
         [NetWorkType.localhost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342"],
     ]);
     const AssetAddresses: Map<number, string> = new Map([
@@ -280,7 +266,11 @@ describe("Test of SettlementClient - Using agent", function () {
 
     let savePurchaseClient: SavePurchaseClient;
     before(() => {
-        savePurchaseClient = new SavePurchaseClient(network, privateKeyOfCollector, addressOfAsset);
+        savePurchaseClient = new SavePurchaseClient(
+            network,
+            KeysOfCollector.get(network) || "",
+            AssetAddresses.get(network) || ""
+        );
     });
 
     it("Check Previous Point Balance...", async () => {
@@ -290,12 +280,12 @@ describe("Test of SettlementClient - Using agent", function () {
 
     it("Save New Purchase 1", async () => {
         await savePurchaseClient.saveNewPurchase(
-            getPurchaseId(),
+            Helper.getPurchaseId(),
             CommonUtils.getTimeStampBigInt(),
             0n,
             100_000_000,
             100_000_000,
-            "php",
+            CommonUtils.getDefaultCurrencySymbol(network),
             purchaseShopId,
             userAccount,
             "",
@@ -327,8 +317,6 @@ describe("Test of SettlementClient - Using agent", function () {
     let settlementClient: SettlementClient;
     let refundAgent: SettlementClient;
     let withdrawalAgent: SettlementClient;
-    const privateKeyOfCollector = AccessKeys.get(network) || "";
-    const addressOfAsset = AssetAddresses.get(network) || "";
     const shops: IShopData[] = JSON.parse(fs.readFileSync("./tests/data/shops.json", "utf8"));
     const users: IUserData[] = JSON.parse(fs.readFileSync("./tests/data/users.json", "utf8"));
     const settlementClientForShop = shops.map((m) => new SettlementClientForShop(network, m.privateKey, m.shopId));
@@ -383,7 +371,7 @@ describe("Test of SettlementClient - Using agent", function () {
     const terminalID: string = "POS001";
 
     before("Create Client for Payment", async () => {
-        const privateKeyForPayment = AccessKeys.get(network) || "";
+        const privateKeyForPayment = KeysOfCollector.get(network) || "";
         paymentClient = new PaymentClient(network, privateKeyForPayment);
         userClient = new PaymentClientForUser(network, users[0].privateKey);
     });
@@ -400,12 +388,12 @@ describe("Test of SettlementClient - Using agent", function () {
             console.log(`[1. End - Temporary Account] temporaryAccount: ${temporaryAccount}`);
 
             console.log(`[2. Begin - Open New Payment] paymentId`);
-            const purchaseId = getPurchaseId();
+            const purchaseId = Helper.getPurchaseId();
             paymentItem = await paymentClient.openNewPayment(
                 purchaseId,
                 temporaryAccount,
                 BOACoin.make(100_000).value,
-                "php",
+                CommonUtils.getDefaultCurrencySymbol(network),
                 shopClient.getShopId(),
                 terminalID
             );

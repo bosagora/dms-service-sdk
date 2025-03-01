@@ -1,16 +1,12 @@
 import { BOACoin, NetWorkType, ProviderClient } from "../src";
 
+import { IUserData } from "./types";
+
 import * as assert from "assert";
 
 import { BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import fs from "fs";
-
-interface IUserData {
-    phone: string;
-    address: string;
-    privateKey: string;
-}
 
 describe("Test of ProviderClient", function () {
     this.timeout(1000 * 60 * 5);

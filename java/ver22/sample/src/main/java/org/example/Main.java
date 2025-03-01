@@ -365,7 +365,9 @@ public class Main {
     }
 
     public static void testSaveNewPurchase() {
-        // 포인트를 사용하여 구매를 하기 위해 필요한 키 네트워크 별로 가지고 있어야 한다
+
+        // 구매정보 저장을 위해 필요한 키
+        // 네트워크 별로 가지고 있어야 한다
         // 메인넷의 키는 담당자에게 직접요청하여야 함
         //---------------------------------------------------------------------------------------
         Map<NetWorkType, String> keysOfCollector = new HashMap<>();
@@ -481,7 +483,8 @@ public class Main {
 
     public static void testSaveCancelPurchase() {
 
-        // 포인트를 사용하여 구매를 하기 위해 필요한 키 네트워크 별로 가지고 있어야 한다
+        // 구매정보 저장을 위해 필요한 키
+        // 네트워크 별로 가지고 있어야 한다
         // 메인넷의 키는 담당자에게 직접요청하여야 함
         //---------------------------------------------------------------------------------------
         Map<NetWorkType, String> keysOfCollector = new HashMap<>();
