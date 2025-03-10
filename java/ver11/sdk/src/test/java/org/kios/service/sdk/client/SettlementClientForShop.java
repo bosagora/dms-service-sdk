@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class SettlementClientForShop extends SettlementClient {
@@ -19,8 +19,8 @@ public class SettlementClientForShop extends SettlementClient {
     }
 
     public String getSettlementManager() throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/shop/settlement/manager/get/" + getShopId());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/shop/settlement/manager/get/" + getShopId());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getString("managerId");
     }
@@ -34,8 +34,8 @@ public class SettlementClientForShop extends SettlementClient {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/shop/settlement/manager/set", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/shop/settlement/manager/set", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("shopId", getShopId());
@@ -59,8 +59,8 @@ public class SettlementClientForShop extends SettlementClient {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/shop/settlement/manager/remove", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/shop/settlement/manager/remove", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("shopId", getShopId());
@@ -76,8 +76,8 @@ public class SettlementClientForShop extends SettlementClient {
     }
 
     public String getAgentOfRefund() throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/agent/refund/" + getShopId());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/agent/refund/" + getShopId());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getString("agent");
     }
@@ -91,8 +91,8 @@ public class SettlementClientForShop extends SettlementClient {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/agent/refund", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/agent/refund", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("account", getAddress());
@@ -108,8 +108,8 @@ public class SettlementClientForShop extends SettlementClient {
     }
 
     public String getAgentOfWithdrawal() throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/agent/withdrawal/" + getShopId());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/agent/withdrawal/" + getShopId());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getString("agent");
     }
@@ -123,8 +123,8 @@ public class SettlementClientForShop extends SettlementClient {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/agent/withdrawal", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/agent/withdrawal", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("account", getAddress());

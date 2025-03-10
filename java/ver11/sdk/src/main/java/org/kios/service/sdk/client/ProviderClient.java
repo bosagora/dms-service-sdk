@@ -11,7 +11,7 @@ import org.web3j.utils.Numeric;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -43,8 +43,8 @@ public class ProviderClient extends Client {
      * @param account Wallet address
      */
     public Boolean isProvider(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/provider/status/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/provider/status/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getBoolean("enable");
     }
@@ -65,8 +65,8 @@ public class ProviderClient extends Client {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/provider/assistant/register", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/provider/assistant/register", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("provider", this.credentials.getAddress());
@@ -86,8 +86,8 @@ public class ProviderClient extends Client {
      * @param provider Provider's wallet address
      */
     public String getAgent(String provider) throws Exception {
-        URI uri = new URI(String.format("%s/v1/provider/assistant/%s", relayEndpoint, provider));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(String.format("%s/v1/provider/assistant/%s", relayEndpoint, provider));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getString("assistant");
     }
@@ -112,8 +112,8 @@ public class ProviderClient extends Client {
         byte[] message = CommonUtils.getProvidePointToAddressMessage(provider, receiver, amount, nonce, chainId);
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/provider/send/account", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/provider/send/account", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("provider", provider);
@@ -143,8 +143,8 @@ public class ProviderClient extends Client {
         byte[] message = CommonUtils.getProvidePointToPhoneMessage(provider, phoneHash, amount, nonce, chainId);
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/provider/send/phoneHash", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/provider/send/phoneHash", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("provider", provider);

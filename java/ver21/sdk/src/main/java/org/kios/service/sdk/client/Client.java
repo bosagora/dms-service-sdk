@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -113,13 +113,13 @@ public class Client {
 
     /**
      * Create an HTTP connection
-     * @param uri URL
+     * @param url URL
      * @param method GET or POST
      * @return HttpURLConnection
      * @throws Exception Exception while creating HTTP connection
      */
-    protected HttpURLConnection getHttpURLConnection(@NotNull URI uri, String method) throws Exception  {
-        HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
+    protected HttpURLConnection getHttpURLConnection(@NotNull URL url, String method) throws Exception  {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
         conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
         conn.setConnectTimeout(5000);
@@ -138,8 +138,8 @@ public class Client {
         if (chainId != 0) {
             return chainId;
         }
-        URI uri = new URI(relayEndpoint + "/v1/chain/side/id");
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/chain/side/id");
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         chainId = data.getInt("chainId");
         return chainId;
@@ -154,8 +154,8 @@ public class Client {
      * @throws Exception Error during HTTP communication
      */
     public UserBalance getBalancePhone(@NotNull String phoneNumber) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/ledger/balance/phone/" + phoneNumber.trim().replace(" ", "%20"));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/ledger/balance/phone/" + phoneNumber.trim().replace(" ", "%20"));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return new UserBalance(data.getJSONObject("point"), data.getJSONObject("token"));
     }
@@ -168,8 +168,8 @@ public class Client {
      * @throws Exception Error during HTTP communication
      */
     public UserBalance getBalancePhoneHash(@NotNull String phoneHash) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/ledger/balance/phoneHash/" + phoneHash.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/ledger/balance/phoneHash/" + phoneHash.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return new UserBalance(data.getJSONObject("point"), data.getJSONObject("token"));
     }
@@ -179,11 +179,11 @@ public class Client {
      * @param account User's wallet address
      * @return UserBalance
      *
-     * @throws Exception Error during HTTP communication
+     * @throws Exception Error durlng HTTP communication
      */
     public UserBalance getBalanceAccount(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/ledger/balance/account/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/ledger/balance/account/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return new UserBalance(data.getJSONObject("point"), data.getJSONObject("token"));
     }
@@ -194,11 +194,11 @@ public class Client {
      * @param account User's wallet address
      * @return the nonce
      *
-     * @throws Exception Error during HTTP communication
+     * @throws Exception Error durlng HTTP communication
      */
     public long getLedgerNonceOf(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/ledger/nonce/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/ledger/nonce/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getInt("nonce");
     }
@@ -207,16 +207,16 @@ public class Client {
     private ChainInfo _sideChainInfo;
 
     public long getShopNonceOf(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/shop/nonce/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/shop/nonce/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getInt("nonce");
     }
 
     public ChainInfo getChainInfoOfMainChain() throws Exception {
         if (_mainChainInfo != null) return _mainChainInfo;
-        URI uri = new URI(relayEndpoint + "/v1/chain/main/info/");
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/chain/main/info/");
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         _mainChainInfo = ChainInfo.fromJSONObject(data);
         return _mainChainInfo;
@@ -228,23 +228,23 @@ public class Client {
     }
 
     public long getNonceOfMainChainToken(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/token/main/nonce/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/token/main/nonce/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getInt("nonce");
     }
 
     public BigInteger getBalanceOfMainChainToken(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/token/main/balance/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/token/main/balance/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getBigInteger("balance");
     }
 
     public ChainInfo getChainInfoOfSideChain() throws Exception {
         if (_sideChainInfo != null) return _sideChainInfo;
-        URI uri = new URI(relayEndpoint + "/v1/chain/side/info/");
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/chain/side/info/");
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         _sideChainInfo = ChainInfo.fromJSONObject(data);
         return _sideChainInfo;
@@ -256,15 +256,15 @@ public class Client {
     }
 
     public long getNonceOfSideChainToken(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/token/side/nonce/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/token/side/nonce/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getInt("nonce");
     }
 
     public BigInteger getBalanceOfSideChainToken(@NotNull String account) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/token/side/balance/" + account.trim());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/token/side/balance/" + account.trim());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getBigInteger("balance");
     }

@@ -14,7 +14,7 @@ import org.web3j.utils.Numeric;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -48,8 +48,8 @@ public class PaymentClient extends Client {
      * @param currency  Currency symbol
      */
     public PaymentInfo getPaymentInfo(@NotNull String account, BigInteger amount, String currency) throws Exception {
-        URI uri = new URI(String.format("%s/v2/payment/info?account=%s&amount=%s&currency=%s", relayEndpoint, account.trim(), amount.toString(), currency.trim()));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(String.format("%s/v2/payment/info?account=%s&amount=%s&currency=%s", relayEndpoint, account.trim(), amount.toString(), currency.trim()));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return new PaymentInfo(
                 data.getString("account"),
@@ -85,8 +85,8 @@ public class PaymentClient extends Client {
                 terminalId
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
-        URI uri = new URI(String.format("%s/v2/payment/new/open", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/payment/new/open", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("purchaseId", purchaseId);
@@ -115,8 +115,8 @@ public class PaymentClient extends Client {
                 confirm
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
-        URI uri = new URI(String.format("%s/v2/payment/new/close", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/payment/new/close", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("paymentId", paymentId);
@@ -141,8 +141,8 @@ public class PaymentClient extends Client {
                 terminalId
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
-        URI uri = new URI(String.format("%s/v2/payment/cancel/open", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/payment/cancel/open", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("paymentId", paymentId);
@@ -167,8 +167,8 @@ public class PaymentClient extends Client {
                 confirm
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
-        URI uri = new URI(String.format("%s/v2/payment/cancel/close", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/payment/cancel/close", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("paymentId", paymentId);
@@ -187,22 +187,22 @@ public class PaymentClient extends Client {
      * @param paymentId Payment ID
      */
     public PaymentTaskItem getPaymentItem(@NotNull String paymentId) throws Exception {
-        URI uri = new URI(String.format("%s/v2/payment/item?paymentId=%s", relayEndpoint, paymentId.trim()));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(String.format("%s/v2/payment/item?paymentId=%s", relayEndpoint, paymentId.trim()));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
 
         return PaymentTaskItem.fromJSONObject(getJSONObjectResponse(conn));
     }
 
     public long getLatestTaskSequence() throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/task/sequence/latest");
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/task/sequence/latest");
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getLong("sequence");
     }
 
     public JSONArray getTasks(long sequence) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/task/list/" + String.valueOf(sequence));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/task/list/" + String.valueOf(sequence));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         return getJSONArrayResponse(conn);
     }
 }

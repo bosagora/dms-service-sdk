@@ -14,7 +14,7 @@ import org.web3j.utils.Numeric;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -41,15 +41,15 @@ public class SettlementClient extends Client {
     }
 
     public long getSettlementClientLength() throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/shop/settlement/client/length/" + getShopId());
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/shop/settlement/client/length/" + getShopId());
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return data.getInt("length");
     }
 
     public ArrayList<String> getSettlementClientList(long startIndex, long endIndex) throws Exception {
-        URI uri = new URI(relayEndpoint + "/v1/shop/settlement/client/list/" + getShopId() + "?startIndex=" + startIndex + "&endIndex=" + endIndex);
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(relayEndpoint + "/v1/shop/settlement/client/list/" + getShopId() + "?startIndex=" + startIndex + "&endIndex=" + endIndex);
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         JSONArray clients = data.getJSONArray("clients");
         ArrayList<String> clientList = new ArrayList<String>();
@@ -68,8 +68,8 @@ public class SettlementClient extends Client {
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/shop/settlement/collect", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/shop/settlement/collect", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("shopId", getShopId());
@@ -86,8 +86,8 @@ public class SettlementClient extends Client {
     }
 
     public ShopData getShopInfo() throws Exception {
-        URI uri = new URI(String.format("%s/v1/shop/info/%s", relayEndpoint, getShopId()));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(String.format("%s/v1/shop/info/%s", relayEndpoint, getShopId()));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return ShopData.fromJSONObject(data);
     }
@@ -98,8 +98,8 @@ public class SettlementClient extends Client {
     }
 
     public ShopRefundableData getRefundable() throws Exception {
-        URI uri = new URI(String.format("%s/v1/shop/refundable/%s", relayEndpoint, getShopId()));
-        HttpURLConnection conn = getHttpURLConnection(uri, "GET");
+        URL url = new URL(String.format("%s/v1/shop/refundable/%s", relayEndpoint, getShopId()));
+        HttpURLConnection conn = getHttpURLConnection(url, "GET");
         JSONObject data = getJSONObjectResponse(conn);
         return ShopRefundableData.fromJSONObject(data);
     }
@@ -111,8 +111,8 @@ public class SettlementClient extends Client {
         byte[] message = CommonUtils.getShopRefundMessage(getShopId(), adjustedAmount, nonce, chainId);
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/shop/refund", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/shop/refund", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("shopId", getShopId());
@@ -143,8 +143,8 @@ public class SettlementClient extends Client {
                 expiry);
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v1/ledger/withdraw_via_bridge", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v1/ledger/withdraw_via_bridge", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("account", getAddress());

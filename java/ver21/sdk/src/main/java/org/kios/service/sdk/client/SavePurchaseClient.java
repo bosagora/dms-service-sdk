@@ -15,7 +15,7 @@ import org.web3j.utils.Numeric;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -131,8 +131,8 @@ public class SavePurchaseClient extends Client {
         );
         adjustedPurchase.purchaseSignature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
 
-        URI uri = new URI(String.format("%s/v2/tx/purchase/new", saveEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/tx/purchase/new", saveEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
 
@@ -195,8 +195,8 @@ public class SavePurchaseClient extends Client {
         adjustedPurchase.purchaseSignature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
         SaveCancelOthers adjustedOthers = new SaveCancelOthers(timestamp, waiting);
 
-        URI uri = new URI(String.format("%s/v2/tx/purchase/cancel", saveEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/tx/purchase/cancel", saveEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
 

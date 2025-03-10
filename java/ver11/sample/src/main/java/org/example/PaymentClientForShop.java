@@ -16,7 +16,7 @@ import org.web3j.utils.Numeric;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class PaymentClientForShop extends PaymentClient {
@@ -66,8 +66,8 @@ public class PaymentClientForShop extends PaymentClient {
                 this.getChainId()
         );
         String signature = CommonUtils.signMessage(this.credentials.getEcKeyPair(), message);
-        URI uri = new URI(String.format("%s/v2/payment/cancel/approval", relayEndpoint));
-        HttpURLConnection conn = getHttpURLConnection(uri, "POST");
+        URL url = new URL(String.format("%s/v2/payment/cancel/approval", relayEndpoint));
+        HttpURLConnection conn = getHttpURLConnection(url, "POST");
 
         JSONObject body = new JSONObject();
         body.put("paymentId", paymentId);
