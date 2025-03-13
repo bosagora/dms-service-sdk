@@ -16,16 +16,18 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kios.service.sdk.data.payment.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SettlementClientTest {
-    private final NetWorkType network = NetWorkType.acc_testnet;
-    private Hashtable<NetWorkType, String> AccessKeys;
-    private Hashtable<NetWorkType, String> AssetAddresses;
+    private final NetWorkType network = NetWorkType.kios_testnet;
+    Map<NetWorkType, String> keysOfCollector = new HashMap<>();
+    Map<NetWorkType, String> keysOfPayment = new HashMap<>();
+    Map<NetWorkType, String> addressOfAsset = new HashMap<>();
     private ArrayList<ShopData> shops;
     private ArrayList<UserData> users;
     private ArrayList<ShopData> activeShops;
@@ -38,35 +40,51 @@ class SettlementClientTest {
 
     @Test
     void RunTest() {
-        AccessKeys = new Hashtable<NetWorkType, String>();
-        AssetAddresses = new Hashtable<NetWorkType, String>();
+        // 구매정보 저장을 위해 필요한 키
+        // 네트워크 별로 가지고 있어야 한다
+        // 메인넷의 키는 담당자에게 직접요청하여야 함
+        //---------------------------------------------------------------------------------------
+        keysOfCollector.put(NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        keysOfCollector.put(NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
+        //---------------------------------------------------------------------------------------
 
-        AccessKeys.put(NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
-        AccessKeys.put(NetWorkType.localhost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342");
+        // 포인트를 자산을 소유한 주소
+        //---------------------------------------------------------------------------------------
+        addressOfAsset.put(NetWorkType.acc_testnet, "0x85EeBb1289c0d0C17eFCbadB40AeF0a1c3b46714");
+        addressOfAsset.put(NetWorkType.acc_mainnet, "0xCB2e8ebBF4013164161d7F2297be25d4A9dC6b17");
+        addressOfAsset.put(NetWorkType.kios_testnet, "0x153f2340807370855092D04E0e0abe4f2b634240");
+        addressOfAsset.put(NetWorkType.kios_mainnet, "0xf077c9CfFa387E35de72b68448ceD5382CbC5D7D");
+        //---------------------------------------------------------------------------------------
 
-        AssetAddresses.put(NetWorkType.acc_testnet, "0x85EeBb1289c0d0C17eFCbadB40AeF0a1c3b46714");
-        AssetAddresses.put(NetWorkType.localhost, "0x4501F7aF010Cef3DcEaAfbc7Bfb2B39dE57df54d");
+        // 포인트를 사용하여 구매를 하기 위해 필요한 키 네트워크 별로 가지고 있어야 한다
+        // 메인넷의 키는 담당자에게 직접요청하여야 함
+        //---------------------------------------------------------------------------------------
+        keysOfPayment.put(NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        keysOfPayment.put(NetWorkType.kios_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        keysOfPayment.put(NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
+        keysOfPayment.put(NetWorkType.acc_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000");
+        //---------------------------------------------------------------------------------------
 
         shops = new ArrayList<ShopData>();
         users = new ArrayList<UserData>();
-        shops.add(new ShopData("0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874", "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a"));
-        shops.add(new ShopData("0x00015f59d6b480ff5a30044dcd7fe3b28c69b6d0d725ca469d1b685b57dfc105", "0x05152ad8d5b14d3f65539e0e42131bc72cbdd16c486cb215d60b7dc113ca1ebd"));
-        shops.add(new ShopData("0x000108f12f827f0521be34e7563948dc778cb80f7498cebb57cb1a62840d96eb", "0xf4b8aa615834c57d1e4836c683c8d3460f8ff232667dc317f82844e674ee4f26"));
-        shops.add(new ShopData("0x0001befa86be32da60a87a843bf3e63e77092040ee044f854e8d318d1eb18d20", "0xe58b3ae0e68a04996d6c13c9f9cb65b2d88ada662f28edd67db8c8e1ef45eed4"));
-        shops.add(new ShopData("0x00013ecc54754b835d04ee5b4df7d0d0eb4e0eafc33ac8de4d282d641f7f054d", "0x1f2246394971c643d371a2b2ab9176d34b98c0a84a6aa5e4e53f73ab6119dcc1"));
-        shops.add(new ShopData("0x0001548b7faa282b8721218962e3c1ae43608009534663de91a1548e37cc1c69", "0x49d28e02787ca6f2827065c83c9c4de2369b4d18d132505d3c01ba35a4558214"));
-        shops.add(new ShopData("0x000108bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86", "0xd72fb7fe49fd18f92481cbee186050816631391b4a25d579b7cff7efdf7099d3"));
-        shops.add(new ShopData("0x000104ef11be936f49f6388dd20d062e43170fd7ce9e968e51426317e284b930", "0x90ee852d612e080fb99914d40e0cd75edf928ca895bdda8b91be4b464c55edfc"));
-        shops.add(new ShopData("0x00016bad0e0f6ad0fdd7660393b45f452a0eca3f6f1f0eeb25c5902e46a1ffee", "0x8bfcb398c9cb1c7c11790a2293f6d4d8c0adc5f2bd3620561dd81e2db2e9a83e"));
-        shops.add(new ShopData("0x00012a23595cf31762a61502546e8b9f947baf3bd55040d9bd535f8afdbff409", "0x77962b6be5cd2ab0c692fe500f50965b5051822d91fece18dcd256dc79182305"));
+        shops.add(new ShopData("0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874", "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a"));
+        shops.add(new ShopData("0x00035f59d6b480ff5a30044dcd7fe3b28c69b6d0d725ca469d1b685b57dfc105", "0x05152ad8d5b14d3f65539e0e42131bc72cbdd16c486cb215d60b7dc113ca1ebd"));
+        shops.add(new ShopData("0x000308f12f827f0521be34e7563948dc778cb80f7498cebb57cb1a62840d96eb", "0xf4b8aa615834c57d1e4836c683c8d3460f8ff232667dc317f82844e674ee4f26"));
+        shops.add(new ShopData("0x0003befa86be32da60a87a843bf3e63e77092040ee044f854e8d318d1eb18d20", "0xe58b3ae0e68a04996d6c13c9f9cb65b2d88ada662f28edd67db8c8e1ef45eed4"));
+        shops.add(new ShopData("0x00033ecc54754b835d04ee5b4df7d0d0eb4e0eafc33ac8de4d282d641f7f054d", "0x1f2246394971c643d371a2b2ab9176d34b98c0a84a6aa5e4e53f73ab6119dcc1"));
+        shops.add(new ShopData("0x0003548b7faa282b8721218962e3c1ae43608009534663de91a1548e37cc1c69", "0x49d28e02787ca6f2827065c83c9c4de2369b4d18d132505d3c01ba35a4558214"));
+        shops.add(new ShopData("0x000308bde9ef98803841f22e8bc577a69fc47913914a8f5fa60e016aaa74bc86", "0xd72fb7fe49fd18f92481cbee186050816631391b4a25d579b7cff7efdf7099d3"));
+        shops.add(new ShopData("0x000304ef11be936f49f6388dd20d062e43170fd7ce9e968e51426317e284b930", "0x90ee852d612e080fb99914d40e0cd75edf928ca895bdda8b91be4b464c55edfc"));
+        shops.add(new ShopData("0x00036bad0e0f6ad0fdd7660393b45f452a0eca3f6f1f0eeb25c5902e46a1ffee", "0x8bfcb398c9cb1c7c11790a2293f6d4d8c0adc5f2bd3620561dd81e2db2e9a83e"));
+        shops.add(new ShopData("0x00032a23595cf31762a61502546e8b9f947baf3bd55040d9bd535f8afdbff409", "0x77962b6be5cd2ab0c692fe500f50965b5051822d91fece18dcd256dc79182305"));
 
         activeShops = new ArrayList<ShopData>();
-        activeShops.add(new ShopData("0x0001be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874", "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a"));
-        activeShops.add(new ShopData("0x00015f59d6b480ff5a30044dcd7fe3b28c69b6d0d725ca469d1b685b57dfc105", "0x05152ad8d5b14d3f65539e0e42131bc72cbdd16c486cb215d60b7dc113ca1ebd"));
-        activeShops.add(new ShopData("0x000108f12f827f0521be34e7563948dc778cb80f7498cebb57cb1a62840d96eb", "0xf4b8aa615834c57d1e4836c683c8d3460f8ff232667dc317f82844e674ee4f26"));
-        activeShops.add(new ShopData("0x0001befa86be32da60a87a843bf3e63e77092040ee044f854e8d318d1eb18d20", "0xe58b3ae0e68a04996d6c13c9f9cb65b2d88ada662f28edd67db8c8e1ef45eed4"));
-        activeShops.add(new ShopData("0x00013ecc54754b835d04ee5b4df7d0d0eb4e0eafc33ac8de4d282d641f7f054d", "0x1f2246394971c643d371a2b2ab9176d34b98c0a84a6aa5e4e53f73ab6119dcc1"));
-        activeShops.add(new ShopData("0x0001548b7faa282b8721218962e3c1ae43608009534663de91a1548e37cc1c69", "0x49d28e02787ca6f2827065c83c9c4de2369b4d18d132505d3c01ba35a4558214"));
+        activeShops.add(new ShopData("0x0003be96d74202df38fd21462ffcef10dfe0fcbd7caa3947689a3903e8b6b874", "0xa237d68cbb66fd5f76e7b321156c46882546ad87d662dec8b82703ac31efbf0a"));
+        activeShops.add(new ShopData("0x00035f59d6b480ff5a30044dcd7fe3b28c69b6d0d725ca469d1b685b57dfc105", "0x05152ad8d5b14d3f65539e0e42131bc72cbdd16c486cb215d60b7dc113ca1ebd"));
+        activeShops.add(new ShopData("0x000308f12f827f0521be34e7563948dc778cb80f7498cebb57cb1a62840d96eb", "0xf4b8aa615834c57d1e4836c683c8d3460f8ff232667dc317f82844e674ee4f26"));
+        activeShops.add(new ShopData("0x0003befa86be32da60a87a843bf3e63e77092040ee044f854e8d318d1eb18d20", "0xe58b3ae0e68a04996d6c13c9f9cb65b2d88ada662f28edd67db8c8e1ef45eed4"));
+        activeShops.add(new ShopData("0x00033ecc54754b835d04ee5b4df7d0d0eb4e0eafc33ac8de4d282d641f7f054d", "0x1f2246394971c643d371a2b2ab9176d34b98c0a84a6aa5e4e53f73ab6119dcc1"));
+        activeShops.add(new ShopData("0x0003548b7faa282b8721218962e3c1ae43608009534663de91a1548e37cc1c69", "0x49d28e02787ca6f2827065c83c9c4de2369b4d18d132505d3c01ba35a4558214"));
 
         users.add(new UserData("+82 10-1000-2000", "0x70438bc3ed02b5e4b76d496625cb7c06d6b7bf4362295b16fdfe91a046d4586c"));
         users.add(new UserData("+82 10-1000-2001", "0x44868157d6d3524beb64c6ae41ee6c879d03c19a357dadb038fefea30e23cbab"));
@@ -83,7 +101,7 @@ class SettlementClientTest {
     }
 
     void SavePurchase() {
-        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(network, AccessKeys.get(network), AssetAddresses.get(network));
+        SavePurchaseClient savePurchaseClient = new SavePurchaseClient(network, keysOfCollector.get(network), addressOfAsset.get(network));
 
         try {
             // Check Balance
@@ -133,7 +151,7 @@ class SettlementClientTest {
 
             // Create Client
             System.out.println("[ Create Client ]");
-            PaymentClient client = new PaymentClient(network, AccessKeys.get(network));
+            PaymentClient client = new PaymentClient(network, keysOfPayment.get(network));
 
             String terminalID = "POS001";
             PaymentTaskItem paymentItem;
