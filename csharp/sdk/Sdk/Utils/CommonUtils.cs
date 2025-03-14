@@ -393,4 +393,37 @@ public static class CommonUtils
         var key = EthECKey.GenerateKey();
         return new ClientKey(key.GetPublicAddress(), key.GetPrivateKey());
     }
+
+    public static NetWorkType GetNetworkType(string shopId)
+    {
+        if (shopId.Length < 5)
+        {
+            return NetWorkType.KIOS_MainNet;
+        }
+        
+        var prefix = shopId.Substring(0, 6);
+        return prefix switch
+        {
+            "0x0001" => NetWorkType.ACC_TestNet,
+            "0x0002" => NetWorkType.ACC_MainNet,
+            "0x0003" => NetWorkType.KIOS_TestNet,
+            _ => NetWorkType.KIOS_MainNet
+        };
+    }
+    
+    public static string GetDefaultCurrencySymbol(NetWorkType netWorkType)
+    {
+        return netWorkType is NetWorkType.ACC_TestNet or NetWorkType.ACC_MainNet ? "php" : "krw";
+    }
+    
+    public static string GetShopIdPrefix(NetWorkType netWorkType)
+    {
+        return netWorkType switch
+        {
+            NetWorkType.ACC_TestNet => "0x0001",
+            NetWorkType.ACC_MainNet => "0x0002",
+            NetWorkType.KIOS_TestNet => "0x0003",
+            _ => "0x0004"
+        };
+    }
 }

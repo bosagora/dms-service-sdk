@@ -1,3 +1,5 @@
+using Kios.Service.Sdk.Types;
+
 namespace Kios.Service.Sdk.Test;
 
 using Nethereum.Signer;
@@ -54,5 +56,38 @@ public class CommonUtilsTest
         var clientKey = CommonUtils.CreateRandomKey();
         Console.WriteLine("Address: {0}", clientKey.Address);
         Console.WriteLine("PrivateKey: {0}", clientKey.PrivateKey);
+    }
+    
+    [Test]
+    public void GetNetworkType()
+    {
+        Assert.That(CommonUtils.GetNetworkType("0x0"),
+            Is.EqualTo(NetWorkType.KIOS_MainNet));
+        Assert.That(CommonUtils.GetNetworkType("0x0001"),
+            Is.EqualTo(NetWorkType.ACC_TestNet));
+        Assert.That(CommonUtils.GetNetworkType("0x0002"),
+            Is.EqualTo(NetWorkType.ACC_MainNet));
+        Assert.That(CommonUtils.GetNetworkType("0x0003"),
+            Is.EqualTo(NetWorkType.KIOS_TestNet));
+        Assert.That(CommonUtils.GetNetworkType("0x0004"),
+            Is.EqualTo(NetWorkType.KIOS_MainNet));
+    }
+    
+    [Test]
+    public void GetDefaultCurrencySymbol()
+    {
+        Assert.That(CommonUtils.GetDefaultCurrencySymbol(NetWorkType.KIOS_MainNet),
+            Is.EqualTo("krw"));
+        Assert.That(CommonUtils.GetDefaultCurrencySymbol(NetWorkType.ACC_MainNet),
+            Is.EqualTo("php"));
+    }
+    
+    [Test]
+    public void GetShopIdPrefix()
+    {
+        Assert.That(CommonUtils.GetShopIdPrefix(NetWorkType.KIOS_MainNet),
+            Is.EqualTo("0x0004"));
+        Assert.That(CommonUtils.GetShopIdPrefix(NetWorkType.ACC_TestNet),
+            Is.EqualTo("0x0001"));
     }
 }
