@@ -13,7 +13,7 @@ describe("Test of SavePurchaseClient For New Purchase", function () {
     const KeysOfCollector: Map<number, string> = new Map([
         [NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276"],
         [NetWorkType.acc_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"],
-        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+        [NetWorkType.kios_testnet, " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01"],
         [NetWorkType.kios_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"], // 비밀키 생성후 주소만 시스템에 등록해야함
         [NetWorkType.localhost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342"],
     ]);
@@ -139,7 +139,7 @@ describe("Test of SavePurchaseClient For Cancel Purchase", function () {
     const KeysOfCollector: Map<number, string> = new Map([
         [NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276"],
         [NetWorkType.acc_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"],
-        [NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee"],
+        [NetWorkType.kios_testnet, " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01"],
         [NetWorkType.kios_mainnet, "0x0000000000000000000000000000000000000000000000000000000000000000"], // 비밀키 생성후 주소만 시스템에 등록해야함
         [NetWorkType.localhost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342"],
     ]);

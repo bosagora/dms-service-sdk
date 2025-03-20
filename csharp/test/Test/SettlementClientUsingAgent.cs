@@ -41,7 +41,7 @@ public class SettlementClientUsingAgentTests
         AccessKeys = new Dictionary<NetWorkType, string>();
         AccessKeys.Add(NetWorkType.ACC_TestNet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
         AccessKeys.Add(NetWorkType.ACC_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
-        AccessKeys.Add(NetWorkType.KIOS_TestNet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        AccessKeys.Add(NetWorkType.KIOS_TestNet, " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01");
         AccessKeys.Add(NetWorkType.KIOS_MainNet, "0x0000000000000000000000000000000000000000000000000000000000000000");
         AccessKeys.Add(NetWorkType.LocalHost, "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342");
 

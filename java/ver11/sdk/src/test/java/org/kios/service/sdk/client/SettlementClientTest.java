@@ -44,7 +44,7 @@ class SettlementClientTest {
         // 네트워크 별로 가지고 있어야 한다
         // 메인넷의 키는 담당자에게 직접요청하여야 함
         //---------------------------------------------------------------------------------------
-        keysOfCollector.put(NetWorkType.kios_testnet, "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee");
+        keysOfCollector.put(NetWorkType.kios_testnet, " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01");
         keysOfCollector.put(NetWorkType.acc_testnet, "0x8acceea5937a8e4bb07abc93a1374264dd9bd2fc384c979717936efe63367276");
         //---------------------------------------------------------------------------------------
 

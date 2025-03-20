@@ -37,7 +37,7 @@ The system adds purchase information received from a trusted partner to the bloc
 ```cs
 var SavePurchaseClient client = new SavePurchaseClient(
     NetWorkType.KIOS_TestNet, 
-    "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee", // The private key of wallet
+    " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01", // The private key of wallet
     "0x153f2340807370855092D04E0e0abe4f2b634240" //  The address of wallet, This is the address where token assets are stored
     );
 ```

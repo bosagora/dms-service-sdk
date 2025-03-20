@@ -39,7 +39,7 @@ data, the system gives the buyer a percentage of the purchase amount as points.
 
 ```typescript
 // The private key of wallet
-const privateKeyOfCollector = "0xa0dcffca22f13363ab5d109f3a51ca99754cff4ce4c71dccc0c5df7f6492beee";
+const privateKeyOfCollector = " 0x4310056fb7b2b56fc8e81ab9d82718496b74286e5026102ece514918423cdf01";
 // The address of wallet, This is the address where token assets are stored
 const addressOfAsset = "0x153f2340807370855092D04E0e0abe4f2b634240";
 // Create a client
